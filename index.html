@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ThaiThuk — Pattaya & Thailand News, Street Level</title>
+<meta name="description" content="Independent English-language news and stories from Pattaya and around Thailand: local wire, features, coastal life and practical tools.">
+<meta property="og:title" content="ThaiThuk — Pattaya & Thailand News, Street Level">
+<meta property="og:description" content="Independent news and stories from Pattaya and around Thailand — street level, sourced, written by people who live here.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="images/og-image.jpg">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebSite","name":"ThaiThuk","url":"https://thaithuk.com","description":"Independent English-language news and stories from Pattaya and around Thailand."}
+</script>
+<script>if(localStorage.getItem('thaituk_theme')!=='light')document.documentElement.classList.add('dark')</script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="assets/tw-config.js?v=3"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/site.css?v=3">
+<link rel="icon" type="image/png" href="images/favicon.png">
+<link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+</head>
+<body class="bg-cream dark:bg-night font-sans text-ink dark:text-slate-100 antialiased">
+
+<div id="site-header"></div>
+
+<!-- HERO -->
+<section class="relative vignette">
+  <img src="images/bangkok.jpeg" alt="Bangkok skyline and the Chao Phraya river glowing at dusk" class="card-img street-photo h-[26rem] md:h-[32rem]">
+  <div class="absolute inset-0 bg-gradient-to-r from-night/85 via-night/45 to-transparent"></div>
+  <div class="absolute inset-0 flex items-center z-10">
+    <div class="max-w-7xl mx-auto px-4 w-full">
+      <div class="max-w-2xl">
+        <p class="text-gold font-semibold tracking-[.25em] uppercase text-xs mb-3 neon-amber">Independent &bull; On the ground</p>
+        <h1 class="font-serif text-5xl md:text-7xl font-bold text-white leading-none uppercase">
+          Pattaya &amp; Bangkok,<br><span class="text-hot neon">Straight Talk</span>
+        </h1>
+        <p class="mt-4 text-slate-200 text-lg leading-relaxed">Street-level news, local wire reports and long reads from the soi up — sourced, current, and written by people who actually live here.</p>
+        <div class="mt-6 flex flex-wrap gap-3">
+          <a href="news.html" class="px-6 py-3 bg-hot text-white font-semibold hover:bg-rose-700 shadow-neon uppercase tracking-wide text-sm">Latest News</a>
+          <a href="#network" class="px-6 py-3 border-2 border-gold text-gold font-semibold hover:bg-gold hover:text-night transition-colors uppercase tracking-wide text-sm">Tools &amp; Guides</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- FEATURED STORY -->
+<section class="max-w-7xl mx-auto px-4 mt-14">
+  <div class="grid md:grid-cols-2 gap-8 items-stretch bg-surface dark:bg-slate-800 rounded-2xl shadow-soft border border-gold/15 dark:border-slate-700 overflow-hidden">
+    <a href="article-curry-row.html" class="block min-h-64" aria-label="Read: Curry Row"><img src="images/walking-street.jpg" alt="Walking Street at night, crowds under a canyon of neon signs" class="card-img street-photo min-h-64"></a>
+    <div class="p-8 flex flex-col justify-center">
+      <span class="text-xs font-bold tracking-widest uppercase text-hot">Featured &bull; Street Economics</span>
+      <h2 class="font-serif text-3xl font-bold mt-2 dark:text-white"><a href="article-curry-row.html" class="hover:text-hot dark:hover:text-gold">Curry Row: How Indian Money Is Remaking Pattaya, One Shopfront at a Time</a></h2>
+      <p class="mt-3 text-ink/70 dark:text-slate-300 leading-relaxed">India sent 2.49 million visitors to Thailand last year and nowhere feels it like Pattaya: 78 restaurants on and around Second Road, a wedding economy running 24/7 buffets, and a city doing what it always does — repainting the signs for whoever's arriving.</p>
+      <a href="article-curry-row.html" class="mt-5 inline-flex items-center gap-1 text-teal font-semibold hover:gap-2 transition-all">Read the full story →</a>
+    </div>
+  </div>
+</section>
+
+<!-- WEATHER -->
+<section class="max-w-7xl mx-auto px-4 mt-16">
+  <a class="weatherwidget-io block w-full" href="https://forecast7.com/en/12d93100d88/pattaya-city/" data-label_1="PATTAYA" data-label_2="WEATHER" data-theme="sky">PATTAYA WEATHER</a>
+  <script>
+  !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src='https://weatherwidget.io/js/widget.min.js';fjs.parentNode.insertBefore(js,fjs);}}(document,'script','weatherwidget-io-js');
+  </script>
+</section>
+
+<!-- LATEST -->
+<section class="max-w-7xl mx-auto px-4 mt-16">
+  <div class="flex flex-wrap items-end justify-between gap-4 mb-6">
+    <h2 class="font-serif text-3xl font-bold dark:text-white">Latest from ThaiThuk</h2>
+    <div class="flex flex-wrap gap-2" role="group" aria-label="Filter by category">
+      <button data-filter="all" class="px-3 py-1.5 text-xs font-semibold rounded-full border border-gold/30 dark:border-slate-600 hover:bg-hot hover:text-white transition-colors">All</button>
+      <button data-filter="news" class="px-3 py-1.5 text-xs font-semibold rounded-full border border-gold/30 dark:border-slate-600 hover:bg-hot hover:text-white transition-colors">News</button>
+      <button data-filter="culture" class="px-3 py-1.5 text-xs font-semibold rounded-full border border-gold/30 dark:border-slate-600 hover:bg-hot hover:text-white transition-colors">Culture &amp; Isan</button>
+      <button data-filter="coastal" class="px-3 py-1.5 text-xs font-semibold rounded-full border border-gold/30 dark:border-slate-600 hover:bg-hot hover:text-white transition-colors">Coastal Life</button>
+      <button data-filter="travel" class="px-3 py-1.5 text-xs font-semibold rounded-full border border-gold/30 dark:border-slate-600 hover:bg-hot hover:text-white transition-colors">Travel &amp; Visas</button>
+      <button data-filter="festivals" class="px-3 py-1.5 text-xs font-semibold rounded-full border border-gold/30 dark:border-slate-600 hover:bg-hot hover:text-white transition-colors">Food &amp; Festivals</button>
+    </div>
+  </div>
+
+  <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+    <article data-cat="news" class="bg-surface dark:bg-slate-800 rounded-xl shadow-soft border border-gold/15 dark:border-slate-700 overflow-hidden flex flex-col">
+      <a href="article-low-season-prices.html" class="block h-44" aria-label="Read story"><img src="images/soi6.jpg" alt="Soi 6 bar signs over a quiet daytime street" class="card-img street-photo h-44"></a>
+      <div class="p-5 flex flex-col flex-1">
+        <span class="text-[11px] font-bold uppercase tracking-widest text-hot">Pattaya &bull; Opinion</span>
+        <h3 class="font-serif text-lg font-bold mt-1 dark:text-white"><a href="article-low-season-prices.html" class="hover:text-hot dark:hover:text-gold">The low-season paradox: fewer tourists, higher prices</a></h3>
+        <p class="text-sm text-ink/70 dark:text-slate-300 mt-2 flex-1">Bar fines up 60%, beer creeping toward Western prices, empty stools — why Pattaya's bar strip squeezes hardest when the crowds leave.</p>
+        <a href="article-low-season-prices.html" class="mt-3 text-sm font-semibold text-teal">Read the story →</a>
+      </div>
+    </article>
+
+    <article data-cat="news" class="bg-surface dark:bg-slate-800 rounded-xl shadow-soft border border-gold/15 dark:border-slate-700 overflow-hidden flex flex-col">
+      <a href="article-baht-bus.html" class="block h-44" aria-label="Read story"><img src="images/bahtbus.jpeg" alt="A blue Pattaya baht bus parked at the roadside" class="card-img street-photo h-44"></a>
+      <div class="p-5 flex flex-col flex-1">
+        <span class="text-[11px] font-bold uppercase tracking-widest text-gold">Pattaya &bull; Opinion</span>
+        <h3 class="font-serif text-lg font-bold mt-1 dark:text-white"><a href="article-baht-bus.html" class="hover:text-hot dark:hover:text-gold">The five-baht outrage: baht bus fares rise for the first time in 30 years</a></h3>
+        <p class="text-sm text-ink/70 dark:text-slate-300 mt-2 flex-1">10 to 15 baht, the forums melt down — and it's still the cheapest ride in urban Asia. The numbers.</p>
+        <a href="article-baht-bus.html" class="mt-3 text-sm font-semibold text-teal">Read the story →</a>
+      </div>
+    </article>
+
+    <article data-cat="travel" class="bg-surface dark:bg-slate-800 rounded-xl shadow-soft border border-gold/15 dark:border-slate-700 overflow-hidden flex flex-col">
+      <a href="article-secret-islands.html" class="block h-44" aria-label="Read the island guide"><img src="images/SSb0Y.jpg" alt="Koh Lipe at golden hour with longtail boats on clear turquoise water" class="card-img street-photo h-44"></a>
+      <div class="p-5 flex flex-col flex-1">
+        <span class="text-[11px] font-bold uppercase tracking-widest text-teal">Island &bull; Guide</span>
+        <h3 class="font-serif text-lg font-bold mt-1 dark:text-white"><a href="article-secret-islands.html" class="hover:text-hot dark:hover:text-gold">The Thailand islands that still feel like a secret</a></h3>
+        <p class="text-sm text-ink/70 dark:text-slate-300 mt-2 flex-1">Skip the crowds. Koh Kood, Koh Lipe, Kradan, the Krabi lagoons and Koh Tao — empty sand, longtail boats and water so clear it feels unreal.</p>
+        <a href="article-secret-islands.html" class="mt-3 text-sm font-semibold text-teal">Read the guide →</a>
+      </div>
+    </article>
+
+    <article data-cat="coastal" class="bg-surface dark:bg-slate-800 rounded-xl shadow-soft border border-gold/15 dark:border-slate-700 overflow-hidden flex flex-col">
+      <a href="article-things-to-do-pattaya.html" class="block h-44" aria-label="Read guide"><img src="images/kohlarn.jpg" alt="Koh Larn beach cove off Pattaya" class="card-img street-photo h-44"></a>
+      <div class="p-5 flex flex-col flex-1">
+        <span class="text-[11px] font-bold uppercase tracking-widest text-teal">Pattaya &bull; Guide</span>
+        <h3 class="font-serif text-lg font-bold mt-1 dark:text-white"><a href="article-things-to-do-pattaya.html" class="hover:text-hot dark:hover:text-gold">17 things actually worth doing in Pattaya — rated by people who live here</a></h3>
+        <p class="text-sm text-ink/70 dark:text-slate-300 mt-2 flex-1">Temples, viewpoints, markets, cabaret and the island escape — with straight talk on what to skip.</p>
+        <a href="article-things-to-do-pattaya.html" class="mt-3 text-sm font-semibold text-teal">Read the guide →</a>
+      </div>
+    </article>
+
+    <article data-cat="travel" class="bg-surface dark:bg-slate-800 rounded-xl shadow-soft border border-gold/15 dark:border-slate-700 overflow-hidden flex flex-col">
+      <a href="article-doing-thailand-wrong.html" class="block h-44" aria-label="Read feature"><img src="images/thailand.jpg" alt="Longtail boats on clear water against limestone cliffs, Thailand" class="card-img street-photo h-44"></a>
+      <div class="p-5 flex flex-col flex-1">
+        <span class="text-[11px] font-bold uppercase tracking-widest text-emerald2">Travel &amp; Straight Talk</span>
+        <h3 class="font-serif text-lg font-bold mt-1 dark:text-white"><a href="article-doing-thailand-wrong.html" class="hover:text-hot dark:hover:text-gold">14 ways you're doing Thailand wrong (and how to fix every one)</a></h3>
+        <p class="text-sm text-ink/70 dark:text-slate-300 mt-2 flex-1">Rushed itineraries, photo-menu dinners, burning-season bookings and the two-price economy — straight talk.</p>
+        <a href="article-doing-thailand-wrong.html" class="mt-3 text-sm font-semibold text-teal">Read the story →</a>
+      </div>
+    </article>
+
+    <article data-cat="coastal" class="bg-surface dark:bg-slate-800 rounded-xl shadow-soft border border-gold/15 dark:border-slate-700 overflow-hidden flex flex-col">
+      <a href="article-curry-row.html" class="block h-44" aria-label="Read feature"><img src="images/walking-street.jpg" alt="Pattaya street neon at night" class="card-img street-photo h-44"></a>
+      <div class="p-5 flex flex-col flex-1">
+        <span class="text-[11px] font-bold uppercase tracking-widest text-teal">Pattaya &bull; Street Economics</span>
+        <h3 class="font-serif text-lg font-bold mt-1 dark:text-white"><a href="article-curry-row.html" class="hover:text-hot dark:hover:text-gold">Curry Row: the Indian boom remaking Second Road</a></h3>
+        <p class="text-sm text-ink/70 dark:text-slate-300 mt-2 flex-1">2.49M arrivals, 78 restaurants, a 24/7 wedding economy — the biggest story in town isn't on Walking Street.</p>
+        <a href="article-curry-row.html" class="mt-3 text-sm font-semibold text-teal">Read the story →</a>
+      </div>
+    </article>
+  </div>
+  <p id="no-results" class="hidden mt-6 text-center text-ink/60 dark:text-slate-400">No stories match that filter yet — more coming soon.</p>
+  <div class="mt-8 text-center"><a href="news.html" class="px-6 py-3 border-2 border-teal text-teal font-semibold hover:bg-teal hover:text-white transition-colors uppercase tracking-wide text-sm">Browse all stories</a></div>
+</section>
+
+<!-- AD SLOT -->
+<div class="max-w-7xl mx-auto px-4 mt-14"><div class="ad-slot">Ad slot — leaderboard 728×90</div></div>
+
+<!-- TOOLS & GUIDES -->
+<section id="network" class="max-w-7xl mx-auto px-4 mt-16">
+  <h2 class="font-serif text-3xl font-semibold uppercase tracking-wide dark:text-white">Tools &amp; <span class="text-gold">Guides</span></h2>
+  <p class="mt-2 text-ink/70 dark:text-slate-300 max-w-2xl">Practical tools we built and run ourselves — visas, budgets, Thai script, lottery results and trip planning.</p>
+  <div class="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-5">
+    <a href="https://thaivisafinder.com" target="_blank" rel="noopener" class="group bg-surface dark:bg-slate-800 rounded-xl p-5 shadow-soft border border-gold/15 dark:border-slate-700 hover:shadow-lift transition-shadow">
+      <div class="text-2xl">🛂</div>
+      <h3 class="font-serif font-bold mt-2 dark:text-white group-hover:text-teal">ThaiVisaFinder</h3>
+      <p class="text-xs mt-1 text-ink/60 dark:text-slate-400">Find the right visa for your stay — clearly explained.</p>
+    </a>
+    <a href="https://thaiholidaybudget.com" target="_blank" rel="noopener" class="group bg-surface dark:bg-slate-800 rounded-xl p-5 shadow-soft border border-gold/15 dark:border-slate-700 hover:shadow-lift transition-shadow">
+      <div class="text-2xl">💸</div>
+      <h3 class="font-serif font-bold mt-2 dark:text-white group-hover:text-teal">ThaiHolidayBudget</h3>
+      <p class="text-xs mt-1 text-ink/60 dark:text-slate-400">Plan a realistic trip budget that goes further.</p>
+    </a>
+    <a href="https://thailetters.com" target="_blank" rel="noopener" class="group bg-surface dark:bg-slate-800 rounded-xl p-5 shadow-soft border border-gold/15 dark:border-slate-700 hover:shadow-lift transition-shadow">
+      <div class="text-2xl">🔤</div>
+      <h3 class="font-serif font-bold mt-2 dark:text-white group-hover:text-teal">ThaiLetters</h3>
+      <p class="text-xs mt-1 text-ink/60 dark:text-slate-400">Learn to read Thai script, step by step.</p>
+    </a>
+    <a href="https://thailotterynumbers.com" target="_blank" rel="noopener" class="group bg-surface dark:bg-slate-800 rounded-xl p-5 shadow-soft border border-gold/15 dark:border-slate-700 hover:shadow-lift transition-shadow">
+      <div class="text-2xl">🎟️</div>
+      <h3 class="font-serif font-bold mt-2 dark:text-white group-hover:text-teal">ThaiLotteryNumbers</h3>
+      <p class="text-xs mt-1 text-ink/60 dark:text-slate-400">Official draw results, twice a month.</p>
+    </a>
+    <a href="https://thaitripplanner.com" target="_blank" rel="noopener" class="group bg-surface dark:bg-slate-800 rounded-xl p-5 shadow-soft border border-gold/15 dark:border-slate-700 hover:shadow-lift transition-shadow">
+      <div class="text-2xl">🗺️</div>
+      <h3 class="font-serif font-bold mt-2 dark:text-white group-hover:text-teal">ThaiTripPlanner</h3>
+      <p class="text-xs mt-1 text-ink/60 dark:text-slate-400">Build a day-by-day route around the kingdom.</p>
+    </a>
+  </div>
+</section>
+
+<!-- COMMUNITY TEASER -->
+<section class="max-w-7xl mx-auto px-4 mt-16 mb-4">
+  <div class="bg-night rounded-2xl p-8 md:p-10 text-center border border-gold/20">
+    <h2 class="font-serif text-2xl md:text-3xl font-bold text-white">Got a tip, a correction or a story from the soi?</h2>
+    <p class="mt-2 text-slate-300 max-w-xl mx-auto">ThaiThuk runs on street-level knowledge. If you know something we should cover, we want to hear it.</p>
+    <a href="contact.html" class="inline-block mt-5 px-6 py-3 bg-gold text-night font-semibold uppercase tracking-wide text-sm hover:bg-golddeep transition-colors">Contact the desk</a>
+  </div>
+</section>
+
+<div id="site-footer"></div>
+<script src="assets/site.js?v=3"></script>
+</body>
+</html>

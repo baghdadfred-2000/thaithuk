@@ -1,0 +1,71 @@
+/* SHARED STYLES — load on every page. Street-neon edition. */
+
+/* Image placeholders: replace each .img-ph div with a real <img> when you
+   have licensed photos. The data-label describes the photo to source. */
+.img-ph {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+  background:
+    radial-gradient(120% 90% at 85% 5%, rgba(255,46,99,.45), transparent 55%),
+    radial-gradient(100% 80% at 10% 95%, rgba(13,180,196,.4), transparent 60%),
+    radial-gradient(60% 50% at 50% 50%, rgba(255,176,32,.18), transparent 70%),
+    linear-gradient(150deg, #0A0A0F 0%, #14141B 60%, #1d1030 130%);
+}
+.img-ph::after {
+  content: attr(data-label);
+  position: relative;
+  margin: .75rem;
+  padding: .3rem .7rem;
+  font-size: .68rem;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.85);
+  background: rgba(10,10,15,.7);
+  border: 1px solid rgba(255,46,99,.5);
+  border-radius: 3px;
+  backdrop-filter: blur(3px);
+}
+
+/* Real photos inside cards/heroes */
+.card-img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* Neon sign headline effect (use sparingly: hero, section kickers) */
+.neon {
+  text-shadow: 0 0 6px rgba(255,46,99,.8), 0 0 24px rgba(255,46,99,.45);
+}
+.neon-amber {
+  text-shadow: 0 0 6px rgba(255,176,32,.8), 0 0 22px rgba(255,176,32,.4);
+}
+
+/* Subtle photo treatment: slight desaturate + vignette for street mood */
+.street-photo { filter: saturate(.92) contrast(1.06); }
+.vignette { position: relative; }
+.vignette::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(120% 100% at 50% 30%, transparent 55%, rgba(10,10,15,.55) 100%);
+}
+
+/* Long-form article typography */
+.prose-thai { max-width: 44rem; }
+.prose-thai p { margin: 1.1rem 0; line-height: 1.85; }
+.prose-thai h2 { font-family: Oswald, "Arial Narrow", sans-serif; font-weight: 600;
+  font-size: 1.45rem; letter-spacing: .01em; text-transform: uppercase;
+  margin: 2.2rem 0 .6rem; }
+.prose-thai blockquote { border-left: 3px solid #FF2E63; padding-left: 1rem;
+  font-style: italic; margin: 1.5rem 0; }
+.prose-thai a { color: #0DB4C4; text-decoration: underline; text-underline-offset: 3px; }
+.dark .prose-thai a { color: #35d8e8; }
+
+/* Local Wire ticker rows */
+.wire-row { border-left: 3px solid #FF2E63; transition: background .15s; }
+.wire-row:hover { background: rgba(255,46,99,.06); }
+
+/* AdSense-ready slot — swap the inner div for your ad unit code */
+.ad-slot {
+  display: flex; align-items: center; justify-content: center;
+  min-height: 90px; border: 1px dashed rgba(255,46,99,.45);
+  border-radius: 4px; color: rgba(156,156,168,.7);
+  font-size: .7rem; letter-spacing: .1em; text-transform: uppercase;
+}

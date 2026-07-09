@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The ThaiThuk Quiz — 50 Questions on Thailand | ThaiThuk</title>
+<meta name="description" content="50 questions on Thailand, Bangkok and Pattaya — culture, history, food and street smarts. Think you know the Land of Smiles? Prove it.">
+<script>if(localStorage.getItem('thaituk_theme')!=='light')document.documentElement.classList.add('dark')</script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="assets/tw-config.js?v=3"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/site.css?v=3">
+<link rel="icon" type="image/png" href="images/favicon.png">
+<link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+</head>
+<body class="bg-cream dark:bg-night font-sans text-ink dark:text-slate-100 antialiased">
+
+<div id="site-header"></div>
+
+<main class="max-w-3xl mx-auto px-4 mt-10 mb-16">
+
+  <!-- INTRO SCREEN -->
+  <section id="quiz-intro">
+    <p class="text-[11px] font-bold uppercase tracking-widest text-gold">The ThaiThuk Quiz</p>
+    <h1 class="font-serif text-3xl md:text-4xl font-bold leading-tight mt-2 dark:text-white">How well do you really know Thailand?</h1>
+    <p class="mt-4 text-ink/80 dark:text-slate-300 leading-relaxed">50 questions on Thailand, Bangkok and Pattaya — history, food, festivals, nightlife lore and the street smarts you only pick up on the ground. Four choices per question, one point per correct answer. No timer, no mercy.</p>
+    <div class="mt-6 bg-surface dark:bg-slate-800 rounded-xl shadow-soft border border-gold/15 dark:border-slate-700 p-5 text-sm text-ink/70 dark:text-slate-300">
+      <p><strong class="text-ink dark:text-white">Fair warning:</strong> if you've never argued with a tuk-tuk driver or stood up for the anthem at the cinema, some of these will sting. Score is out of 50 at the end.</p>
+    </div>
+    <button id="start-btn" class="mt-8 px-8 py-3 rounded-full bg-hot text-white font-semibold text-lg hover:bg-hot/90 transition-colors">Start the Quiz</button>
+  </section>
+
+  <!-- QUESTION SCREEN -->
+  <section id="quiz-play" class="hidden">
+    <div class="flex items-center justify-between text-sm mb-2">
+      <span id="q-counter" class="font-semibold text-hot dark:text-gold"></span>
+      <span id="q-score" class="text-ink/60 dark:text-slate-400"></span>
+    </div>
+    <div class="h-2 rounded-full bg-gold/20 overflow-hidden mb-6">
+      <div id="q-bar" class="h-full bg-gold transition-all duration-300" style="width:0%"></div>
+    </div>
+    <div class="bg-surface dark:bg-slate-800 rounded-xl shadow-soft border border-gold/15 dark:border-slate-700 p-6">
+      <h2 id="q-text" class="font-serif text-xl md:text-2xl font-bold leading-snug dark:text-white"></h2>
+      <div id="q-options" class="mt-5 grid gap-3"></div>
+      <div id="q-feedback" class="hidden mt-5 p-4 rounded-lg text-sm leading-relaxed"></div>
+      <button id="next-btn" class="hidden mt-5 px-6 py-2.5 rounded-full bg-hot text-white font-semibold hover:bg-hot/90 transition-colors">Next Question →</button>
+    </div>
+  </section>
+
+  <!-- RESULTS SCREEN -->
+  <section id="quiz-results" class="hidden">
+    <p class="text-[11px] font-bold uppercase tracking-widest text-gold">Results</p>
+    <div class="mt-4 bg-surface dark:bg-slate-800 rounded-xl shadow-soft border border-gold/15 dark:border-slate-700 p-8 text-center">
+      <p class="text-sm uppercase tracking-widest text-ink/60 dark:text-slate-400">Your Score</p>
+      <p class="font-serif text-6xl font-bold text-hot dark:text-gold mt-2"><span id="r-score"></span><span class="text-3xl text-ink/50 dark:text-slate-400"> / <span id="r-total"></span></span></p>
+      <p id="r-title" class="font-serif text-2xl font-bold mt-4 dark:text-white"></p>
+      <p id="r-blurb" class="mt-2 text-ink/70 dark:text-slate-300"></p>
+      <button id="retry-btn" class="mt-6 px-8 py-3 rounded-full bg-hot text-white font-semibold hover:bg-hot/90 transition-colors">Try Again</button>
+    </div>
+    <div id="r-missed-wrap" class="hidden mt-8">
+      <h3 class="font-serif text-xl font-bold dark:text-white mb-4">Ones that got away</h3>
+      <div id="r-missed" class="space-y-3"></div>
+    </div>
+  </section>
+
+</main>
+
+<div id="site-footer"></div>
+
+<script src="assets/site.js?v=3"></script>
+<script>
+const QUESTIONS = [
+  { q: "Until 1939, Thailand was officially known by what name?",
+    a: "Siam",
+    o: ["Siam", "Lanna", "Sukhothai", "Rattanakosin"],
+    f: "The country changed its name from Siam to Thailand ('land of the free') in 1939 under Prime Minister Phibunsongkhram." },
+  { q: "Muay Thai is called 'the Art of Eight Limbs.' Fists and elbows are four — what are the other four?",
+    a: "Knees and shins",
+    o: ["Knees and shins", "Feet and palms", "Head and shoulders", "Knees and forearms"],
+    f: "Two knees and two shins complete the eight weapons. Headbutts were banned decades ago." },
+  { q: "The elephant on a bottle of Chang beer is a clue — what does 'chang' mean in Thai?",
+    a: "Elephant",
+    o: ["Elephant", "Strong", "River", "Golden"],
+    f: "Chang means elephant, Thailand's national animal. Singha is a mythical lion, and Leo is a clouded leopard." },
+  { q: "After the 2026 fare rise — the first in about 30 years — what does a short hop on a Pattaya baht bus (songthaew) cost on its regular route?",
+    a: "15 baht",
+    o: ["15 baht", "10 baht", "20 baht", "30 baht"],
+    f: "The fare went from 10 to 15 baht in 2026, the first increase in roughly three decades — and the forums melted down anyway. Charter it like a taxi and the price is suddenly very negotiable." },
+  { q: "Which Bangkok street is the world-famous backpacker mecca?",
+    a: "Khao San Road",
+    o: ["Khao San Road", "Sukhumvit Soi 11", "Yaowarat Road", "Silom Road"],
+    f: "Khao San Road, near the Grand Palace, has been the backpacker gateway to Southeast Asia since the 1980s." },
+  { q: "Maya Bay, the setting of the film 'The Beach' (2000), is part of which island group?",
+    a: "Koh Phi Phi",
+    o: ["Koh Phi Phi", "Koh Samui", "Koh Chang", "Similan Islands"],
+    f: "It's on Koh Phi Phi Leh. The bay got so trampled by tourists it was closed from 2018 to 2022 to let the reef recover." },
+  { q: "The year 2026 in the Thai Buddhist calendar is…?",
+    a: "2569",
+    o: ["2569", "2469", "2626", "2069"],
+    f: "The Buddhist Era runs 543 years ahead of the Western calendar — you'll see it on receipts, ID cards and beer expiry dates." },
+  { q: "Songkran, the Thai New Year water festival, officially kicks off on which date?",
+    a: "April 13",
+    o: ["April 13", "January 1", "March 21", "May 5"],
+    f: "April 13–15 officially, though in Pattaya it famously stretches to a full week of soakings ending around April 19." },
+  { q: "Red Bull was born from which Thai energy drink?",
+    a: "Krating Daeng",
+    o: ["Krating Daeng", "M-150", "Carabao", "Lipovitan"],
+    f: "Austrian Dietrich Mateschitz partnered with Chaleo Yoovidhya, creator of Krating Daeng ('red gaur'), to launch Red Bull in 1987." },
+  { q: "Which former Thai capital was sacked by the Burmese in 1767?",
+    a: "Ayutthaya",
+    o: ["Ayutthaya", "Chiang Mai", "Thonburi", "Lopburi"],
+    f: "Ayutthaya was one of the world's great cities before its destruction. Its ruins are now a UNESCO World Heritage site." },
+  { q: "What does every Thai cinema audience do just before the feature film starts?",
+    a: "Stand for the royal anthem",
+    o: ["Stand for the royal anthem", "Recite a Buddhist blessing", "Observe a minute of silence", "Sing the national anthem"],
+    f: "Everyone stands while the King's Anthem plays with a royal tribute film. Staying seated is deeply disrespectful — and illegal." },
+  { q: "King Bhumibol Adulyadej (Rama IX), who died in 2016, held what royal record?",
+    a: "World's longest-reigning monarch at the time",
+    o: ["World's longest-reigning monarch at the time", "Youngest king ever crowned in Asia", "Only king born in Thailand", "First king to abdicate twice"],
+    f: "He reigned 70 years (1946–2016), the world's longest-serving head of state at his death. His portrait still hangs everywhere." },
+  { q: "Bangkok's full ceremonial Thai name, starting 'Krung Thep Maha Nakhon…', holds which world record?",
+    a: "Longest place name in the world",
+    o: ["Longest place name in the world", "Oldest recorded city name", "Most-translated city name", "Longest palindrome in any language"],
+    f: "All 168 letters of it. Thais just say 'Krung Thep' — City of Angels. There's even a pop song for memorising the full version." },
+  { q: "'The Hangover Part II' left Las Vegas behind for a lost weekend in which city?",
+    a: "Bangkok",
+    o: ["Bangkok", "Pattaya", "Phuket", "Manila"],
+    f: "Filmed largely around Bangkok's Chinatown and the Lebua hotel — whose rooftop Sky Bar now sells a 'Hangovertini'." },
+  { q: "Which fruit is famously banned from most Thai hotels and the Bangkok Skytrain?",
+    a: "Durian",
+    o: ["Durian", "Jackfruit", "Mangosteen", "Rambutan"],
+    f: "The 'king of fruits' smells so pungent that no-durian signs sit right next to no-smoking signs across the country." },
+  { q: "A Thai person texts you '555'. What are they telling you?",
+    a: "Hahaha",
+    o: ["Hahaha", "Call me urgently", "I love you", "No, no, no"],
+    f: "The number five is pronounced 'ha' in Thai, so 555 = hahaha. The more fives, the funnier." },
+  { q: "Pattaya's neon-soaked Walking Street runs along which part of the city?",
+    a: "The southern end of Beach Road",
+    o: ["The southern end of Beach Road", "The top of Pattaya Hill", "Naklua, north of the Dolphin Roundabout", "Alongside Jomtien Beach"],
+    f: "It starts where Beach Road ends in South Pattaya, near Bali Hai Pier — pedestrianised at night and impossible to miss." },
+  { q: "Bangkok's Soi Cowboy nightlife strip sits just off which major road?",
+    a: "Sukhumvit Road",
+    o: ["Sukhumvit Road", "Silom Road", "Ratchada Road", "Charoen Krung Road"],
+    f: "Between Sukhumvit Sois 21 and 23, near Asok BTS. It's named after 'Cowboy' T.G. Edwards, an American who opened a bar there in the 1970s wearing a cowboy hat." },
+  { q: "Twice a day, at 8am and 6pm, what happens in Thai parks, stations and schools?",
+    a: "The national anthem plays and people stop and stand still",
+    o: ["The national anthem plays and people stop and stand still", "Sirens are tested nationwide", "Monks collect alms in public squares", "All traffic lights turn red for one minute"],
+    f: "The anthem plays over loudspeakers and everyone freezes where they stand. Watching a busy park stop mid-stride is quite something." },
+  { q: "The Bridge on the River Kwai, built by WWII prisoners of war, is in which province?",
+    a: "Kanchanaburi",
+    o: ["Kanchanaburi", "Chiang Rai", "Nakhon Pathom", "Tak"],
+    f: "Part of the infamous Death Railway to Burma, built at the cost of over 100,000 lives. The bridge still stands and trains still cross it." },
+  { q: "Tony Jaa's 2003 breakout film, which reignited worldwide interest in Muay Thai, was…?",
+    a: "Ong-Bak",
+    o: ["Ong-Bak", "The Protector", "Chocolate", "Born to Fight"],
+    f: "Ong-Bak: Muay Thai Warrior — no wires, no CGI, no stunt doubles. The tuk-tuk chase scene is a Thai action classic." },
+  { q: "Which of these beers is NOT Thai?",
+    a: "Tiger",
+    o: ["Tiger", "Leo", "Singha", "Cheers"],
+    f: "Tiger is from Singapore. Leo and Singha are both brewed by Boon Rawd Brewery; Cheers is a Thai budget brand from ThaiBev." },
+  { q: "The legendary Full Moon Party happens every month on which island?",
+    a: "Koh Phangan",
+    o: ["Koh Phangan", "Koh Tao", "Koh Samet", "Koh Lipe"],
+    f: "On Haad Rin beach, since the late 1980s. Buckets, body paint and up to 30,000 people on a big night." },
+  { q: "A tuk-tuk driver tells you 'Grand Palace closed today, special Buddha holiday' — what's almost certainly coming next?",
+    a: "A detour to a gem shop or tailor that pays him commission",
+    o: ["A detour to a gem shop or tailor that pays him commission", "An honest free tour of the old city", "A request to share the ride with strangers", "A police checkpoint shakedown"],
+    f: "Thailand's most famous scam. The palace is almost never closed — walk to the entrance and check for yourself." },
+  { q: "Tiffany's Show, world-famous since 1974, is what kind of Pattaya institution?",
+    a: "A ladyboy cabaret theatre",
+    o: ["A ladyboy cabaret theatre", "A rooftop jazz club", "A Muay Thai stadium", "A floating seafood restaurant"],
+    f: "Southeast Asia's first transvestite cabaret, drawing tour buses nightly and hosting the Miss Tiffany's Universe pageant." },
+  { q: "Thailand holds which unique distinction in Southeast Asian history?",
+    a: "It was never colonized by a European power",
+    o: ["It was never colonized by a European power", "It was the first Asian country to abolish its monarchy", "It never fought in any world war", "It was the last country to end absolute monarchy"],
+    f: "Skilful diplomacy — and serving as a buffer between British Burma and French Indochina — kept Siam independent." },
+  { q: "Som tam, sticky rice and grilled chicken is the classic food trio of which region?",
+    a: "Isaan (the Northeast)",
+    o: ["Isaan (the Northeast)", "The southern peninsula", "Lanna (the North)", "The central plains"],
+    f: "Isaan food conquered the whole country — most street som tam vendors in Bangkok and Pattaya are from the Northeast." },
+  { q: "'James Bond Island' (Khao Phing Kan), featured in 'The Man with the Golden Gun', rises out of which bay?",
+    a: "Phang Nga Bay",
+    o: ["Phang Nga Bay", "Bandon Bay", "The Gulf of Thailand off Pattaya", "Maya Bay"],
+    f: "The 1974 Bond film made this limestone karst near Phuket so famous the Thais renamed it after 007." },
+  { q: "Sang Som, the spirit in a million Thai beach buckets, is technically what?",
+    a: "A rum (distilled from sugarcane/molasses)",
+    o: ["A rum (distilled from sugarcane/molasses)", "A rice whisky", "A palm-sap brandy", "A herbal liqueur"],
+    f: "Everyone calls it 'Thai whisky', but it's molasses-based — so it's rum. Ubiquitous since 1977." },
+  { q: "Jay Fai, Bangkok's most famous street-food cook, earned a Michelin star wearing ski goggles while making…?",
+    a: "Crab omelettes",
+    o: ["Crab omelettes", "Boat noodles", "Mango sticky rice", "Tom yum goong"],
+    f: "Her kai jeow poo (crab omelette) earned a Michelin star in 2018. The goggles protect her eyes from spitting oil, and the queue is hours long." },
+  { q: "Thailand's current monarch, King Maha Vajiralongkorn, reigns under which dynastic title?",
+    a: "Rama X",
+    o: ["Rama X", "Rama VIII", "Rama XI", "Taksin II"],
+    f: "He succeeded his father Bhumibol (Rama IX) in 2016 as the tenth king of the Chakri dynasty." },
+  { q: "Bangkok's older second airport, the hub for budget carriers like AirAsia, is…?",
+    a: "Don Mueang",
+    o: ["Don Mueang", "U-Tapao", "Hua Hin", "Mae Fah Luang"],
+    f: "Don Mueang (DMK) opened in 1914, making it one of the world's oldest operating airports. Suvarnabhumi (BKK) handles most long-haul flights." },
+  { q: "During Loy Krathong, usually on the November full moon, Thais head to rivers and lakes to do what?",
+    a: "Float candle-lit baskets on the water",
+    o: ["Float candle-lit baskets on the water", "Release turtles into the sea", "Splash water on passers-by", "Burn paper money for ancestors"],
+    f: "Krathongs — little rafts of banana leaf, flowers, incense and a candle — are floated to pay respects to the water goddess and let go of bad luck." },
+  { q: "In everyday Thai speech, a 'farang' is…?",
+    a: "A Westerner",
+    o: ["A Westerner", "A tourist of any nationality", "A rich person", "A foreigner who behaves badly"],
+    f: "It means a Westerner of European descent — usually neutral, occasionally pointed. It's also the Thai word for guava, which generates endless fruit-stand jokes." },
+  { q: "U-Tapao, the airport that now serves Pattaya, played what role in the Vietnam War?",
+    a: "It was a US B-52 bomber base",
+    o: ["It was a US B-52 bomber base", "It was a POW processing camp", "It was a CIA listening station", "It was a field hospital hub"],
+    f: "U-Tapao hosted American B-52s flying missions over Vietnam. The war era is stitched into the region's history — including the next question." },
+  { q: "Pattaya's transformation from sleepy fishing village to resort town began in the 1960s thanks to…?",
+    a: "American GIs on R&R leave from Vietnam",
+    o: ["American GIs on R&R leave from Vietnam", "A royal decree creating a tourism zone", "The opening of Suvarnabhumi Airport", "Japanese package-tour investment"],
+    f: "US servicemen on 'rest and recreation' leave discovered the bay, and the bars, hotels and nightlife economy grew up around them." },
+  { q: "The baht divides into 100 of which smaller unit?",
+    a: "Satang",
+    o: ["Satang", "Sen", "Att", "Salung"],
+    f: "You'll meet 25 and 50 satang coins in supermarket change. An att and a salung are obsolete old Siamese units — trivia within trivia." },
+  { q: "Chatuchak in Bangkok, open Saturdays and Sundays, is famous as one of the world's largest…?",
+    a: "Weekend markets",
+    o: ["Weekend markets", "Flower auctions", "Amulet markets", "Floating markets"],
+    f: "Around 27 sections and some 15,000 stalls selling everything from vintage denim to live squirrels. Veterans bring water and a map." },
+  { q: "Rajadamnern and Lumpinee are Bangkok's two hallowed venues for what?",
+    a: "Muay Thai",
+    o: ["Muay Thai", "Likay folk theatre", "Cockfighting", "Thai classical dance"],
+    f: "Rajadamnern (1945) and Lumpinee are the sport's twin cathedrals — a title at either stadium is the peak of a fighter's career." },
+  { q: "The Tinglish catchphrase you'll hear from every market vendor selling knock-off goods is…?",
+    a: "Same same but different",
+    o: ["Same same but different", "Cheap cheap for you", "Good price good heart", "Number one quality, no lie"],
+    f: "'Same same but different' is the unofficial motto of Thai markets — so beloved it's printed on the tourist T-shirts sold at the same stalls." },
+  { q: "What do Thai customs rules say about taking Buddha images out of the country?",
+    a: "Exporting them is restricted without a permit",
+    o: ["Exporting them is restricted without a permit", "Only gold ones are restricted", "They're freely exportable if bought with a receipt", "Only antiques over 200 years old are restricted"],
+    f: "Thai law restricts exporting Buddha images (souvenir-size amulets are generally tolerated). It's also why 'Buddha is not for decoration' posters greet you at the airport." },
+  { q: "Thailand's government lottery — a twice-monthly national obsession — draws on which days?",
+    a: "The 1st and 16th of each month",
+    o: ["The 1st and 16th of each month", "Every Friday", "The 15th and 30th", "The first Sunday of each month"],
+    f: "Draw days are practically a national event, and lucky-number hunting — licence plates, temple omens, strange tree growths — is a genre of Thai news all its own." },
+  { q: "Bangkok's motorbike taxi drivers are instantly recognisable by their…?",
+    a: "Orange vests",
+    o: ["Orange vests", "Yellow helmets", "Green armbands", "Pink jackets"],
+    f: "Numbered orange vests, queued at the mouth of nearly every soi. Fastest way through Bangkok traffic — hold on and make peace with your gods." },
+  { q: "Chiang Mai was founded in 1296 as the capital of which kingdom?",
+    a: "Lanna",
+    o: ["Lanna", "Sukhothai", "Ayutthaya", "Khmer"],
+    f: "The Lanna ('million rice fields') kingdom ruled the north for centuries — its distinct temples, food and dialect survive today." },
+  { q: "Yaowarat Road is the heart of which legendary Bangkok district?",
+    a: "Chinatown",
+    o: ["Chinatown", "Little India", "The old farang quarter", "The flower market district"],
+    f: "One of the largest Chinatowns on earth, founded in 1782. After dark the street becomes one long seafood-and-neon food crawl." },
+  { q: "Buakaw Banchamek became a Thai national hero by doing what?",
+    a: "Winning international kickboxing titles for Muay Thai",
+    o: ["Winning international kickboxing titles for Muay Thai", "Winning Olympic boxing gold", "Becoming Thailand's first F1 driver", "Starring in Ong-Bak"],
+    f: "His K-1 World MAX wins in Japan (2004, 2006) made him the global face of Muay Thai and a household name in Thailand." },
+  { q: "Pattaya's name is commonly traced to 'Thap Phraya', which refers to what?",
+    a: "The army camp of Phraya Tak, who later became King Taksin",
+    o: ["The army camp of Phraya Tak, who later became King Taksin", "An ancient fishing goddess", "A Khmer word for 'wide bay'", "The southwest monsoon wind only"],
+    f: "Legend says Phraya Tak's army camped here in 1767 en route to retaking the country from the Burmese. 'Pattaya' also names the local monsoon wind." },
+  { q: "The word 'songthaew', for the converted pickup trucks that serve as shared taxis, literally means…?",
+    a: "Two rows",
+    o: ["Two rows", "Slow ride", "Ten baht", "Red truck"],
+    f: "Named for the two bench rows in the back. In Chiang Mai they're 'rot daeng' (red trucks); in Pattaya, the famous dark-blue baht bus." },
+  { q: "The Emerald Buddha, Thailand's most sacred image, sits in Wat Phra Kaew on the grounds of…?",
+    a: "The Grand Palace in Bangkok",
+    o: ["The Grand Palace in Bangkok", "Wat Arun", "Wat Pho", "Doi Suthep in Chiang Mai"],
+    f: "Carved from a single block of jade (not emerald), it wears seasonal gold costumes changed by the King himself." },
+  { q: "Ferries to Koh Larn leave Pattaya from which pier?",
+    a: "Bali Hai Pier",
+    o: ["Bali Hai Pier", "Naklua Pier", "Jomtien Pier", "Laem Chabang Pier"],
+    f: "From the southern end of Walking Street. The slow ferry costs pocket change and takes about 45 minutes; speedboats do it in 15 for more baht." }
+];
+
+/* ---------- Quiz engine ---------- */
+let idx = 0, score = 0, missed = [];
+
+const $ = id => document.getElementById(id);
+const shuffle = arr => arr.map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(p => p[1]);
+
+function startQuiz() {
+  idx = 0; score = 0; missed = [];
+  $('quiz-intro').classList.add('hidden');
+  $('quiz-results').classList.add('hidden');
+  $('quiz-play').classList.remove('hidden');
+  showQuestion();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function showQuestion() {
+  const q = QUESTIONS[idx];
+  $('q-counter').textContent = `Question ${idx + 1} of ${QUESTIONS.length}`;
+  $('q-score').textContent = `Score: ${score}`;
+  $('q-bar').style.width = `${(idx / QUESTIONS.length) * 100}%`;
+  $('q-text').textContent = q.q;
+  $('q-feedback').classList.add('hidden');
+  $('next-btn').classList.add('hidden');
+
+  const box = $('q-options');
+  box.innerHTML = '';
+  shuffle(q.o).forEach(opt => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.textContent = opt;
+    b.className = 'quiz-opt text-left px-4 py-3 rounded-lg border border-gold/25 dark:border-slate-600 bg-cream dark:bg-slate-900 hover:border-gold hover:bg-gold/10 transition-colors text-sm md:text-base dark:text-slate-100';
+    b.addEventListener('click', () => answer(b, opt, q));
+    box.appendChild(b);
+  });
+}
+
+function answer(btn, opt, q) {
+  const correct = opt === q.a;
+  if (correct) score++; else missed.push(q);
+
+  document.querySelectorAll('.quiz-opt').forEach(b => {
+    b.disabled = true;
+    b.classList.remove('hover:border-gold', 'hover:bg-gold/10');
+    if (b.textContent === q.a) {
+      b.classList.add('!bg-emerald-600/15', '!border-emerald-600', 'font-semibold');
+    } else if (b === btn) {
+      b.classList.add('!bg-hot/10', '!border-hot', 'line-through', 'opacity-70');
+    } else {
+      b.classList.add('opacity-50');
+    }
+  });
+
+  const fb = $('q-feedback');
+  fb.className = `mt-5 p-4 rounded-lg text-sm leading-relaxed border ${correct
+    ? 'bg-emerald-600/10 border-emerald-600/40 text-emerald-800 dark:text-emerald-300'
+    : 'bg-hot/10 border-hot/40 text-ink/80 dark:text-slate-200'}`;
+  fb.innerHTML = `<strong>${correct ? 'Correct!' : `Not quite — it's “${q.a}”.`}</strong> ${q.f}`;
+
+  $('q-score').textContent = `Score: ${score}`;
+  const nb = $('next-btn');
+  nb.textContent = idx + 1 < QUESTIONS.length ? 'Next Question →' : 'See My Score →';
+  nb.classList.remove('hidden');
+  nb.focus();
+}
+
+function nextQuestion() {
+  idx++;
+  if (idx < QUESTIONS.length) showQuestion();
+  else showResults();
+}
+
+function rank(s) {
+  if (s >= 45) return ['Honorary Local 🛺', 'You could run your own visa-run minibus. The baht bus drivers probably know you by name.'];
+  if (s >= 35) return ['Seasoned Expat 🍺', 'You clearly know your Leo from your Tiger and your Soi Cowboy from your Khao San. Respect.'];
+  if (s >= 23) return ['Repeat Visitor ✈️', 'Solid. You have been around — a few more low seasons and you will be untouchable.'];
+  if (s >= 12) return ['First-Timer 🎒', 'You know Thailand from the postcards. Time to book a flight and do the fieldwork.'];
+  return ['Fresh Off the Plane 🥥', 'Did the tuk-tuk driver take you to the gem shop? It is okay. It happens to everyone once.'];
+}
+
+function showResults() {
+  $('quiz-play').classList.add('hidden');
+  $('quiz-results').classList.remove('hidden');
+  $('r-score').textContent = score;
+  $('r-total').textContent = QUESTIONS.length;
+  const [title, blurb] = rank(score);
+  $('r-title').textContent = title;
+  $('r-blurb').textContent = blurb;
+
+  const wrap = $('r-missed-wrap');
+  if (missed.length) {
+    wrap.classList.remove('hidden');
+    $('r-missed').innerHTML = missed.map(q => `
+      <div class="bg-surface dark:bg-slate-800 rounded-lg border border-gold/15 dark:border-slate-700 p-4 text-sm">
+        <p class="font-semibold dark:text-white">${q.q}</p>
+        <p class="mt-1 text-emerald-700 dark:text-emerald-400">✓ ${q.a}</p>
+      </div>`).join('');
+  } else {
+    wrap.classList.add('hidden');
+  }
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+$('start-btn').addEventListener('click', startQuiz);
+$('next-btn').addEventListener('click', nextQuestion);
+$('retry-btn').addEventListener('click', startQuiz);
+</script>
+</body>
+</html>
