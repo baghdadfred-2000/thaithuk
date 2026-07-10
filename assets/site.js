@@ -118,6 +118,8 @@ function footerHTML() {
           <a class="hover:text-gold" href="terms-of-service.html">Terms</a>
           <a class="hover:text-gold" href="disclaimer.html">Disclaimer</a>
           <a class="hover:text-gold" href="cookie-policy.html">Cookies</a>
+          <a class="hover:text-gold" href="accessibility.html">Accessibility</a>
+          <button type="button" data-cookie-settings class="hover:text-gold">Cookie Settings</button>
         </nav>
       </div>
     </div>
@@ -159,6 +161,10 @@ document.addEventListener('DOMContentLoaded', () => {
       if (msg) msg.classList.remove('hidden');
     });
   });
+
+  /* Cookie consent + advertising */
+  ttInitConsent();
+  ttLoadAllAds();
 
   /* Category filters + search (listing pages) */
   initFilters();
@@ -307,4 +313,106 @@ function initForum() {
   });
 
   render();
+}
+
+/* =========================================================
+   COOKIE CONSENT + ADVERTISING (Adsterra)
+   - Ads only load after the visitor consents to advertising.
+   - Ad containers are any element with data-ad-key / data-ad-w / data-ad-h.
+   - Call ThaiThukAds.load(el) to (re)load a single unit (used to refresh
+     the banner on every quiz question).
+   ========================================================= */
+const TT_CONSENT_KEY = 'thaithuk_consent_v1';
+
+function ttGetConsent() {
+  try { return JSON.parse(localStorage.getItem(TT_CONSENT_KEY)); } catch { return null; }
+}
+function ttSetConsent(ads) {
+  localStorage.setItem(TT_CONSENT_KEY, JSON.stringify({ ads: !!ads, ts: Date.now() }));
+}
+function ttAdsAllowed() { const c = ttGetConsent(); return !!(c && c.ads); }
+
+/* Load / refresh one Adsterra unit into a container element. */
+function ttLoadAd(el) {
+  if (!el || !el.getAttribute) return;
+  const key = el.getAttribute('data-ad-key');
+  if (!key) return;
+  const w = parseInt(el.getAttribute('data-ad-w'), 10) || 728;
+  const h = parseInt(el.getAttribute('data-ad-h'), 10) || 90;
+  el.innerHTML = '';
+  if (!ttAdsAllowed()) {
+    el.innerHTML = `<div class="tt-ad-ph" style="width:${w}px;height:${h}px;max-width:100%;display:flex;align-items:center;justify-content:center;` +
+      `border:1px dashed rgba(201,162,39,.4);border-radius:8px;font-size:11px;letter-spacing:.15em;text-transform:uppercase;opacity:.5">Advertisement</div>`;
+    return;
+  }
+  const box = document.createElement('div');
+  box.style.cssText = `width:${w}px;height:${h}px;max-width:100%;overflow:hidden;margin:0 auto`;
+  const conf = document.createElement('script');
+  conf.type = 'text/javascript';
+  conf.text = `atOptions = {'key':'${key}','format':'iframe','height':${h},'width':${w},'params':{}};`;
+  const inv = document.createElement('script');
+  inv.type = 'text/javascript';
+  inv.src = `https://www.highperformanceformat.com/${key}/invoke.js`;
+  box.appendChild(conf);
+  box.appendChild(inv);
+  el.appendChild(box);
+}
+function ttLoadAllAds() { document.querySelectorAll('[data-ad-key]').forEach(ttLoadAd); }
+
+window.ThaiThukAds = { load: ttLoadAd, refreshAll: ttLoadAllAds, allowed: ttAdsAllowed };
+
+/* Consent banner (first visit) + settings modal (reopened from footer). */
+function ttInitConsent() {
+  const modal = document.createElement('div');
+  modal.id = 'tt-cc-modal';
+  modal.className = 'hidden fixed inset-0 z-[100] flex items-center justify-center p-4';
+  modal.innerHTML = `
+    <div class="absolute inset-0 bg-black/50" data-cc-close></div>
+    <div class="relative bg-surface dark:bg-slate-800 rounded-xl shadow-xl border border-gold/20 dark:border-slate-700 max-w-md w-full p-6 text-sm">
+      <h2 class="font-serif text-xl font-bold text-ink dark:text-white">Cookie settings</h2>
+      <p class="mt-2 text-ink/70 dark:text-slate-300">Necessary storage keeps the site working on your device. Advertising is optional.</p>
+      <label class="flex items-start gap-3 mt-4 text-ink/80 dark:text-slate-200">
+        <input type="checkbox" checked disabled class="mt-1">
+        <span><strong class="text-ink dark:text-white">Strictly necessary</strong> — remembers your theme, quiz progress and cookie choice on this device only. Always on.</span>
+      </label>
+      <label class="flex items-start gap-3 mt-3 text-ink/80 dark:text-slate-200">
+        <input type="checkbox" id="tt-cc-ads" class="mt-1">
+        <span><strong class="text-ink dark:text-white">Advertising</strong> — lets us show ads via Adsterra, which may set cookies. Turn off to keep the site ad-free for you.</span>
+      </label>
+      <div class="mt-6 flex flex-wrap gap-2 justify-end">
+        <button type="button" data-cc-save class="px-4 py-2 rounded-full bg-hot text-white font-semibold">Save choices</button>
+        <button type="button" data-cc-acceptall class="px-4 py-2 rounded-full border border-gold/40 dark:border-slate-600 text-ink dark:text-slate-100">Accept all</button>
+      </div>
+    </div>`;
+  document.body.appendChild(modal);
+
+  let banner = null;
+  if (!ttGetConsent()) {
+    banner = document.createElement('div');
+    banner.id = 'tt-cc-banner';
+    banner.className = 'fixed bottom-0 inset-x-0 z-[90] bg-night text-slate-200 border-t border-gold/30';
+    banner.innerHTML = `
+      <div class="max-w-5xl mx-auto px-4 py-4 flex flex-col sm:flex-row items-center gap-3 text-sm">
+        <p class="flex-1">We use a little local storage to run ThaiThuk, plus optional cookies to show ads via Adsterra. See our <a href="cookie-policy.html" class="text-gold underline">Cookie Policy</a>.</p>
+        <div class="flex gap-2 shrink-0">
+          <button type="button" data-cc-reject class="px-4 py-2 rounded-full border border-slate-500 hover:bg-slate-800">Reject</button>
+          <button type="button" data-cc-customise class="px-4 py-2 rounded-full border border-gold/40 hover:bg-slate-800">Customise</button>
+          <button type="button" data-cc-acceptall class="px-4 py-2 rounded-full bg-gold text-night font-semibold hover:bg-golddeep">Accept all</button>
+        </div>
+      </div>`;
+    document.body.appendChild(banner);
+  }
+
+  const openModal = () => { const b = document.getElementById('tt-cc-ads'); if (b) b.checked = ttAdsAllowed(); modal.classList.remove('hidden'); };
+  const closeModal = () => modal.classList.add('hidden');
+  const apply = (ads) => { ttSetConsent(ads); if (banner) { banner.remove(); banner = null; } closeModal(); ttLoadAllAds(); };
+
+  document.addEventListener('click', e => {
+    if (e.target.closest('[data-cc-acceptall]')) apply(true);
+    else if (e.target.closest('[data-cc-reject]')) apply(false);
+    else if (e.target.closest('[data-cc-customise]')) openModal();
+    else if (e.target.closest('[data-cc-save]')) apply(!!document.getElementById('tt-cc-ads').checked);
+    else if (e.target.closest('[data-cc-close]')) closeModal();
+    else if (e.target.closest('[data-cookie-settings]')) { e.preventDefault(); openModal(); }
+  });
 }
