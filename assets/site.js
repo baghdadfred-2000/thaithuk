@@ -39,7 +39,10 @@ function headerHTML() {
         <a href="index.html" class="flex items-center gap-2.5 shrink-0" aria-label="ThaiThuk home">
           ${LOGO_SVG}
           <span class="flex flex-col leading-tight">
-            <span class="font-serif text-2xl font-bold text-ink dark:text-white">Thai<span class="text-gold">Thuk</span></span>
+            <span class="flex items-center gap-1.5">
+              <span class="font-serif text-2xl font-bold text-ink dark:text-white">Thai<span class="text-gold">Thuk</span></span>
+              <svg viewBox="0 0 9 6" width="24" height="16" class="rounded-[2px] ring-1 ring-black/10 dark:ring-white/20 shrink-0" role="img" aria-label="Thai flag"><rect width="9" height="6" fill="#F4F5F8"/><rect width="9" height="1" y="0" fill="#A51931"/><rect width="9" height="1" y="5" fill="#A51931"/><rect width="9" height="2" y="2" fill="#2D2A4A"/></svg>
+            </span>
             <span class="hidden sm:block text-[10px] tracking-widest uppercase text-hot">Pattaya &bull; Thailand &bull; Street-Level News</span>
           </span>
         </a>
