@@ -45,10 +45,6 @@ function headerHTML() {
         </a>
         <nav class="hidden lg:flex items-center" aria-label="Main">${links}</nav>
         <div class="flex items-center gap-2">
-          <form class="hidden md:block" action="news.html" role="search">
-            <input name="q" type="search" placeholder="Search stories…" aria-label="Search stories"
-              class="w-40 xl:w-52 px-3 py-1.5 text-sm rounded-full border border-gold/30 bg-surface dark:bg-slate-800 dark:border-slate-600 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-gold/60">
-          </form>
           <button id="theme-toggle" aria-label="Toggle dark mode"
             class="p-2 rounded-full border border-gold/30 dark:border-slate-600 text-ink dark:text-gold hover:bg-gold/10">
             <span class="dark:hidden">🌙</span><span class="hidden dark:inline">☀️</span>
@@ -62,10 +58,6 @@ function headerHTML() {
     </div>
     <div id="mobile-menu" class="hidden lg:hidden bg-surface dark:bg-slate-900 border-t border-gold/20">
       ${mobileLinks}
-      <form class="p-4" action="news.html" role="search">
-        <input name="q" type="search" placeholder="Search stories…" aria-label="Search stories"
-          class="w-full px-3 py-2 text-sm rounded-full border border-gold/30 bg-cream dark:bg-slate-800 dark:border-slate-600 dark:text-slate-100">
-      </form>
     </div>
   </header>`;
 }
@@ -74,7 +66,7 @@ function headerHTML() {
 function footerHTML() {
   return `
   <footer class="mt-20 bg-night text-slate-300">
-    <div class="max-w-7xl mx-auto px-4 py-14 grid gap-10 md:grid-cols-4">
+    <div class="max-w-7xl mx-auto px-4 py-14 grid gap-10 md:grid-cols-3">
       <div>
         <div class="flex items-center gap-2 mb-3">${LOGO_SVG}
           <span class="font-serif text-xl font-bold text-white">Thai<span class="text-gold">Thuk</span></span>
@@ -84,8 +76,8 @@ function footerHTML() {
       <div>
         <h3 class="text-white font-semibold mb-3 text-sm uppercase tracking-wider">Explore</h3>
         <ul class="space-y-2 text-sm">
-          <li><a class="hover:text-gold" href="news.html">News &amp; Updates</a></li>
           <li><a class="hover:text-gold" href="about.html">About ThaiThuk</a></li>
+          <li><a class="hover:text-gold" href="quiz.html">The ThaiThuk Quiz</a></li>
           <li><a class="hover:text-gold" href="contact.html">Contact</a></li>
         </ul>
       </div>
@@ -98,16 +90,6 @@ function footerHTML() {
           <li><a class="hover:text-gold" href="https://thailotterynumbers.com" target="_blank" rel="noopener">ThaiLotteryNumbers</a></li>
           <li><a class="hover:text-gold" href="https://thaitripplanner.com" target="_blank" rel="noopener">ThaiTripPlanner</a></li>
         </ul>
-      </div>
-      <div>
-        <h3 class="text-white font-semibold mb-3 text-sm uppercase tracking-wider">Newsletter</h3>
-        <p class="text-sm mb-3">Stay connected to the best of Thailand — monthly, no spam.</p>
-        <form data-newsletter class="flex gap-2">
-          <input type="email" required placeholder="you@email.com" aria-label="Email address"
-            class="flex-1 min-w-0 px-3 py-2 rounded-md bg-slate-800 border border-slate-600 text-sm text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-gold/60">
-          <button class="px-4 py-2 rounded-md bg-gold text-night font-semibold text-sm hover:bg-golddeep">Join</button>
-        </form>
-        <p data-newsletter-msg class="hidden mt-2 text-sm text-emerald-400">Kop khun ka! You're on the list. 🙏</p>
       </div>
     </div>
     <div class="border-t border-slate-700">
@@ -346,7 +328,7 @@ function ttLoadAd(el) {
     return;
   }
   const box = document.createElement('div');
-  box.style.cssText = `width:${w}px;height:${h}px;max-width:100%;overflow:hidden;margin:0 auto`;
+  box.style.cssText = `width:${w}px;height:${h}px;max-width:100%;overflow-x:auto;margin:0 auto`;
   const conf = document.createElement('script');
   conf.type = 'text/javascript';
   conf.text = `atOptions = {'key':'${key}','format':'iframe','height':${h},'width':${w},'params':{}};`;

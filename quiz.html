@@ -54,8 +54,9 @@
   <section id="quiz-results" class="hidden">
     <p class="text-[11px] font-bold uppercase tracking-widest text-gold">Results</p>
     <div class="mt-4 bg-surface dark:bg-slate-800 rounded-xl shadow-soft border border-gold/15 dark:border-slate-700 p-8 text-center">
-      <p class="text-sm uppercase tracking-widest text-ink/60 dark:text-slate-400">Your Score</p>
-      <p class="font-serif text-6xl font-bold text-hot dark:text-gold mt-2"><span id="r-score"></span><span class="text-3xl text-ink/50 dark:text-slate-400"> / <span id="r-total"></span></span></p>
+      <p class="text-sm uppercase tracking-widest text-ink/60 dark:text-slate-400">Your Result</p>
+      <p class="font-serif text-6xl font-bold text-hot dark:text-gold mt-2"><span id="r-score"></span></p>
+      <p class="mt-1 text-sm text-ink/60 dark:text-slate-400"><span id="r-correct"></span> of <span id="r-total"></span> correct</p>
       <p id="r-title" class="font-serif text-2xl font-bold mt-4 dark:text-white"></p>
       <p id="r-blurb" class="mt-2 text-ink/70 dark:text-slate-300"></p>
       <button id="retry-btn" class="mt-6 px-8 py-3 rounded-full bg-hot text-white font-semibold hover:bg-hot/90 transition-colors">Try Again</button>
@@ -373,10 +374,43 @@ function rank(s) {
   return ['Fresh Off the Plane 🥥', 'Did the tuk-tuk driver take you to the gem shop? It is okay. It happens to everyone once.'];
 }
 
+/* A little burst of celebration on the results screen. */
+function celebrate() {
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const c = document.createElement('canvas');
+  c.style.cssText = 'position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:80';
+  c.width = window.innerWidth; c.height = window.innerHeight;
+  document.body.appendChild(c);
+  const ctx = c.getContext('2d');
+  const colors = ['#B91C1C', '#C9A227', '#0D9488', '#059669', '#7C3AED', '#f59e0b', '#ec4899'];
+  const parts = [];
+  for (let i = 0; i < 170; i++) {
+    const a = Math.random() * Math.PI * 2, sp = 4 + Math.random() * 9;
+    parts.push({ x: c.width / 2, y: c.height * 0.32, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp - 5,
+      s: 5 + Math.random() * 7, rot: Math.random() * 6.28, vr: (Math.random() - 0.5) * 0.3,
+      col: colors[i % colors.length] });
+  }
+  let t = 0;
+  (function frame() {
+    t++;
+    ctx.clearRect(0, 0, c.width, c.height);
+    parts.forEach(p => {
+      p.vy += 0.16; p.vx *= 0.99; p.x += p.vx; p.y += p.vy; p.rot += p.vr;
+      ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.rot);
+      ctx.globalAlpha = Math.max(0, 1 - t / 150); ctx.fillStyle = p.col;
+      ctx.fillRect(-p.s / 2, -p.s / 2, p.s, p.s * 0.6);
+      ctx.restore();
+    });
+    if (t < 150) requestAnimationFrame(frame); else c.remove();
+  })();
+}
+
 function showResults() {
   $('quiz-play').classList.add('hidden');
   $('quiz-results').classList.remove('hidden');
-  $('r-score').textContent = score;
+  const pct = QUESTIONS.length ? Math.round((score / QUESTIONS.length) * 100) : 0;
+  $('r-score').textContent = pct + '%';
+  $('r-correct').textContent = score;
   $('r-total').textContent = QUESTIONS.length;
   const [title, blurb] = rank(score);
   $('r-title').textContent = title;
@@ -394,6 +428,7 @@ function showResults() {
     wrap.classList.add('hidden');
   }
   window.scrollTo({ top: 0, behavior: 'smooth' });
+  celebrate();
 }
 
 // Keep intro copy in sync with the actual number of questions (survives trimming).
