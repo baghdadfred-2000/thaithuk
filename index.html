@@ -10,9 +10,9 @@
 <meta property="og:title" content="ThaiThuk — Pattaya & Thailand News, Street Level">
 <meta property="og:description" content="Independent news and stories from Pattaya and around Thailand — street level, sourced, written by people who live here.">
 <meta property="og:type" content="website">
-<meta property="og:image" content="images/og-image.jpg">
+<meta property="og:image" content="https://thaithuk.com/images/og-image.jpg">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebSite","name":"ThaiThuk","url":"https://thaithuk.com","description":"Independent English-language news and stories from Pattaya and around Thailand."}
+{"@context": "https://schema.org", "@graph": [{"@type": "Organization", "@id": "https://thaithuk.com/#org", "name": "ThaiThuk", "url": "https://thaithuk.com/", "logo": {"@type": "ImageObject", "url": "https://thaithuk.com/apple-touch-icon.png", "width": 512, "height": 512}}, {"@type": "WebSite", "@id": "https://thaithuk.com/#website", "url": "https://thaithuk.com/", "name": "ThaiThuk", "description": "Independent English-language news and stories from Pattaya and around Thailand.", "publisher": {"@id": "https://thaithuk.com/#org"}, "inLanguage": "en"}]}
 </script>
 <script>if(localStorage.getItem('thaituk_theme')!=='light')document.documentElement.classList.add('dark')</script>
 <script src="https://cdn.tailwindcss.com"></script>
@@ -22,6 +22,19 @@
 <link rel="stylesheet" href="assets/site.css?v=3">
 <link rel="icon" type="image/png" href="images/favicon.png">
 <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+
+<!-- SEO: canonical, robots, Open Graph, Twitter Card, structured data added (technical only; no visible content changed) -->
+<link rel="canonical" href="https://thaithuk.com/">
+<meta name="robots" content="index, follow">
+<meta name="googlebot" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta property="og:url" content="https://thaithuk.com/">
+<meta property="og:site_name" content="ThaiThuk">
+<meta property="og:locale" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="ThaiThuk — Pattaya &amp; Thailand News, Street Level">
+<meta name="twitter:description" content="Independent English-language news and stories from Pattaya and around Thailand: local wire, features, coastal life and practical tools.">
+<meta name="twitter:image" content="https://thaithuk.com/images/og-image.jpg">
+<meta name="theme-color" content="#0F172A">
 </head>
 <body class="bg-cream dark:bg-night font-sans text-ink dark:text-slate-100 antialiased">
 
@@ -29,7 +42,7 @@
 
 <!-- HERO -->
 <section class="relative vignette">
-  <img src="images/bangkok.jpeg" alt="Bangkok skyline and the Chao Phraya river glowing at dusk" class="card-img street-photo h-[26rem] md:h-[32rem]">
+  <img src="images/bangkok.jpeg" alt="Bangkok skyline and the Chao Phraya river glowing at dusk" class="card-img street-photo h-[26rem] md:h-[32rem]" width="3200" height="2400" decoding="async" loading="eager" fetchpriority="high">
   <div class="absolute inset-0 bg-gradient-to-r from-night/85 via-night/45 to-transparent"></div>
   <div class="absolute inset-0 flex items-center z-10">
     <div class="max-w-7xl mx-auto px-4 w-full">
@@ -52,7 +65,7 @@
 <!-- FEATURED STORY -->
 <section class="max-w-7xl mx-auto px-4 mt-14">
   <div class="grid md:grid-cols-2 gap-8 items-stretch bg-surface dark:bg-slate-800 rounded-2xl shadow-soft border border-gold/15 dark:border-slate-700 overflow-hidden">
-    <a href="article-curry-row.html" class="block min-h-64" aria-label="Read: Curry Row"><img src="images/walking-street.jpg" alt="Walking Street at night, crowds under a canyon of neon signs" class="card-img street-photo min-h-64"></a>
+    <a href="article-curry-row.html" class="block min-h-64" aria-label="Read: Curry Row"><img src="images/walking-street.jpg" alt="Walking Street at night, crowds under a canyon of neon signs" class="card-img street-photo min-h-64" width="1000" height="750" decoding="async" loading="lazy"></a>
     <div class="p-8 flex flex-col justify-center">
       <span class="text-xs font-bold tracking-widest uppercase text-hot">Featured &bull; Street Economics</span>
       <h2 class="font-serif text-3xl font-bold mt-2 dark:text-white"><a href="article-curry-row.html" class="hover:text-hot dark:hover:text-gold">Curry Row: How Indian Money Is Remaking Pattaya, One Shopfront at a Time</a></h2>
@@ -86,7 +99,7 @@
 
   <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
     <article data-cat="culture" class="bg-surface dark:bg-slate-800 rounded-xl shadow-soft border border-gold/15 dark:border-slate-700 overflow-hidden flex flex-col">
-      <a href="article-esan-food.html" class="block h-44" aria-label="Read the Isan food guide"><img src="images/esan-06-kai-yang.jpg" alt="Charcoal-grilled Isan chicken (kai yang) on skewers" class="card-img street-photo h-44"></a>
+      <a href="article-esan-food.html" class="block h-44" aria-label="Read the Isan food guide"><img src="images/esan-06-kai-yang.jpg" alt="Charcoal-grilled Isan chicken (kai yang) on skewers" class="card-img street-photo h-44" width="1168" height="784" decoding="async" loading="lazy"></a>
       <div class="p-5 flex flex-col flex-1">
         <span class="text-[11px] font-bold uppercase tracking-widest text-gold">Culture &amp; Isan &bull; Food Guide</span>
         <h3 class="font-serif text-lg font-bold mt-1 dark:text-white"><a href="article-esan-food.html" class="hover:text-hot dark:hover:text-gold">The Soul of Isan: 10 essential dishes of Thailand's Northeast</a></h3>
@@ -96,7 +109,7 @@
     </article>
 
     <article data-cat="news" class="bg-surface dark:bg-slate-800 rounded-xl shadow-soft border border-gold/15 dark:border-slate-700 overflow-hidden flex flex-col">
-      <a href="article-low-season-prices.html" class="block h-44" aria-label="Read story"><img src="images/soi6.jpg" alt="Soi 6 bar signs over a quiet daytime street" class="card-img street-photo h-44"></a>
+      <a href="article-low-season-prices.html" class="block h-44" aria-label="Read story"><img src="images/soi6.jpg" alt="Soi 6 bar signs over a quiet daytime street" class="card-img street-photo h-44" width="1920" height="1440" decoding="async" loading="lazy"></a>
       <div class="p-5 flex flex-col flex-1">
         <span class="text-[11px] font-bold uppercase tracking-widest text-hot">Pattaya &bull; Opinion</span>
         <h3 class="font-serif text-lg font-bold mt-1 dark:text-white"><a href="article-low-season-prices.html" class="hover:text-hot dark:hover:text-gold">The low-season paradox: fewer tourists, higher prices</a></h3>
@@ -106,7 +119,7 @@
     </article>
 
     <article data-cat="news" class="bg-surface dark:bg-slate-800 rounded-xl shadow-soft border border-gold/15 dark:border-slate-700 overflow-hidden flex flex-col">
-      <a href="article-baht-bus.html" class="block h-44" aria-label="Read story"><img src="images/bahtbus.jpeg" alt="A blue Pattaya baht bus parked at the roadside" class="card-img street-photo h-44"></a>
+      <a href="article-baht-bus.html" class="block h-44" aria-label="Read story"><img src="images/bahtbus.jpeg" alt="A blue Pattaya baht bus parked at the roadside" class="card-img street-photo h-44" width="639" height="480" decoding="async" loading="lazy"></a>
       <div class="p-5 flex flex-col flex-1">
         <span class="text-[11px] font-bold uppercase tracking-widest text-gold">Pattaya &bull; Opinion</span>
         <h3 class="font-serif text-lg font-bold mt-1 dark:text-white"><a href="article-baht-bus.html" class="hover:text-hot dark:hover:text-gold">The five-baht outrage: baht bus fares rise for the first time in 30 years</a></h3>
@@ -116,7 +129,7 @@
     </article>
 
     <article data-cat="travel" class="bg-surface dark:bg-slate-800 rounded-xl shadow-soft border border-gold/15 dark:border-slate-700 overflow-hidden flex flex-col">
-      <a href="article-secret-islands.html" class="block h-44" aria-label="Read the island guide"><img src="images/SSb0Y.jpg" alt="Koh Lipe at golden hour with longtail boats on clear turquoise water" class="card-img street-photo h-44"></a>
+      <a href="article-secret-islands.html" class="block h-44" aria-label="Read the island guide"><img src="images/SSb0Y.jpg" alt="Koh Lipe at golden hour with longtail boats on clear turquoise water" class="card-img street-photo h-44" width="1216" height="848" decoding="async" loading="lazy"></a>
       <div class="p-5 flex flex-col flex-1">
         <span class="text-[11px] font-bold uppercase tracking-widest text-teal">Island &bull; Guide</span>
         <h3 class="font-serif text-lg font-bold mt-1 dark:text-white"><a href="article-secret-islands.html" class="hover:text-hot dark:hover:text-gold">The Thailand islands that still feel like a secret</a></h3>
@@ -126,7 +139,7 @@
     </article>
 
     <article data-cat="coastal" class="bg-surface dark:bg-slate-800 rounded-xl shadow-soft border border-gold/15 dark:border-slate-700 overflow-hidden flex flex-col">
-      <a href="article-things-to-do-pattaya.html" class="block h-44" aria-label="Read guide"><img src="images/kohlarn.jpg" alt="Koh Larn beach cove off Pattaya" class="card-img street-photo h-44"></a>
+      <a href="article-things-to-do-pattaya.html" class="block h-44" aria-label="Read guide"><img src="images/kohlarn.jpg" alt="Koh Larn beach cove off Pattaya" class="card-img street-photo h-44" width="1500" height="1124" decoding="async" loading="lazy"></a>
       <div class="p-5 flex flex-col flex-1">
         <span class="text-[11px] font-bold uppercase tracking-widest text-teal">Pattaya &bull; Guide</span>
         <h3 class="font-serif text-lg font-bold mt-1 dark:text-white"><a href="article-things-to-do-pattaya.html" class="hover:text-hot dark:hover:text-gold">17 things actually worth doing in Pattaya — rated by people who live here</a></h3>
@@ -137,7 +150,7 @@
 
 
     <article data-cat="coastal" class="bg-surface dark:bg-slate-800 rounded-xl shadow-soft border border-gold/15 dark:border-slate-700 overflow-hidden flex flex-col">
-      <a href="article-curry-row.html" class="block h-44" aria-label="Read feature"><img src="images/walking-street.jpg" alt="Pattaya street neon at night" class="card-img street-photo h-44"></a>
+      <a href="article-curry-row.html" class="block h-44" aria-label="Read feature"><img src="images/walking-street.jpg" alt="Pattaya street neon at night" class="card-img street-photo h-44" width="1000" height="750" decoding="async" loading="lazy"></a>
       <div class="p-5 flex flex-col flex-1">
         <span class="text-[11px] font-bold uppercase tracking-widest text-teal">Pattaya &bull; Street Economics</span>
         <h3 class="font-serif text-lg font-bold mt-1 dark:text-white"><a href="article-curry-row.html" class="hover:text-hot dark:hover:text-gold">Curry Row: the Indian boom remaking Second Road</a></h3>
