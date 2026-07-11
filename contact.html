@@ -40,14 +40,15 @@
     <h2 class="font-serif text-xl font-bold mt-8 dark:text-white">Send us a message</h2>
     <p class="mt-1 text-sm text-ink/60 dark:text-slate-400">Choose a topic and send your message. We reply to the email address you provide, usually within a couple of working days.</p>
 
-    <!-- Netlify Forms: the static markup below (name + data-netlify + hidden form-name)
-         is what Netlify's build detects. The script at the end submits via AJAX so the
-         visitor stays on the page and sees the success toast. -->
-    <form id="contactForm" name="contact" method="POST" data-netlify="true" data-netlify-honeypot="bot-field"
+    <!-- Web3Forms: the hidden access_key routes submissions to our inbox. The script at
+         the end submits via AJAX (JSON) so the visitor stays on the page and sees the
+         success toast. Subject syncs with the chosen topic. -->
+    <form id="contactForm" name="contact" method="POST" action="https://api.web3forms.com/submit"
           class="mt-5 space-y-4 bg-surface dark:bg-slate-800 rounded-xl shadow-soft border border-gold/15 dark:border-slate-700 p-6">
-      <input type="hidden" name="form-name" value="contact">
+      <input type="hidden" name="access_key" value="c394c121-5e53-49ec-be2b-3fdb67c9a3a3">
       <input type="hidden" name="subject" id="c-subject" value="ThaiThuk contact: General question">
-      <p class="hidden" hidden><label>Don't fill this out if you're human: <input name="bot-field"></label></p>
+      <input type="hidden" name="from_name" value="ThaiThuk Contact Form">
+      <input type="checkbox" name="botcheck" style="display:none;" tabindex="-1" autocomplete="off" aria-hidden="true">
 
       <div class="grid sm:grid-cols-2 gap-4">
         <label class="block">
@@ -152,12 +153,12 @@
       var label = btn.textContent;
       btn.disabled = true;
       btn.textContent = 'Sending…';
-      fetch('/', {
+      fetch('https://api.web3forms.com/submit', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams(new FormData(form)).toString()
-      }).then(function (res) {
-        if (!res.ok) { throw new Error('Bad response'); }
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify(Object.fromEntries(new FormData(form)))
+      }).then(function (res) { return res.json(); }).then(function (data) {
+        if (!data.success) { throw new Error(data.message||'Bad response'); }
         form.reset();
         syncSubject();
         showToast();
