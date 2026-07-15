@@ -68,10 +68,7 @@ function headerHTML() {
 /* ---------- SHARED FOOTER (identical on every page) ---------- */
 function footerHTML() {
   return `
-  <footer class="mt-20 bg-night text-slate-300" style="position:relative">
-    <style class="xadr-fix">.xadr{position:absolute!important;top:auto!important;bottom:calc(100% + 100px)!important;width:160px!important;z-index:40;line-height:0}.xadr-l{left:calc(50% - 740px)!important;right:auto!important}.xadr-r{right:calc(50% - 740px)!important;left:auto!important}@media(max-width:1500px){.xadr{display:none!important}}</style>
-    <div class="xadr xadr-l" aria-label="Advertisement" data-ad-key="709ff9b0c541ac5ceab99212c5989309" data-ad-w="160" data-ad-h="300"></div>
-    <div class="xadr xadr-r" aria-label="Advertisement" data-ad-key="709ff9b0c541ac5ceab99212c5989309" data-ad-w="160" data-ad-h="300"></div>
+  <footer class="mt-20 bg-night text-slate-300">
     <div class="max-w-7xl mx-auto px-4 py-14 grid gap-10 md:grid-cols-3">
       <div>
         <div class="flex items-center gap-2 mb-3">${LOGO_SVG}
@@ -333,17 +330,25 @@ function ttLoadAd(el) {
       `border:1px dashed rgba(201,162,39,.4);border-radius:8px;font-size:11px;letter-spacing:.15em;text-transform:uppercase;opacity:.5">Advertisement</div>`;
     return;
   }
-  const box = document.createElement('div');
-  box.style.cssText = `width:${w}px;height:${h}px;max-width:100%;overflow-x:auto;margin:0 auto`;
-  const conf = document.createElement('script');
-  conf.type = 'text/javascript';
-  conf.text = `atOptions = {'key':'${key}','format':'iframe','height':${h},'width':${w},'params':{}};`;
-  const inv = document.createElement('script');
-  inv.type = 'text/javascript';
-  inv.src = `https://www.highperformanceformat.com/${key}/invoke.js`;
-  box.appendChild(conf);
-  box.appendChild(inv);
-  el.appendChild(box);
+  /* Adsterra's invoke.js relies on document.write, which browsers ignore
+     for dynamically injected scripts. Render the unit inside a same-origin
+     iframe where document.write still works. */
+  const frame = document.createElement('iframe');
+  frame.width = w;
+  frame.height = h;
+  frame.setAttribute('scrolling', 'no');
+  frame.style.cssText = `border:0;display:block;max-width:100%;margin:0 auto;overflow:hidden`;
+  el.appendChild(frame);
+  const doc = frame.contentWindow.document;
+  doc.open();
+  doc.write(
+    `<!doctype html><html><head><meta charset="utf-8">` +
+    `<style>html,body{margin:0;padding:0;overflow:hidden}</style></head><body>` +
+    `<script type="text/javascript">atOptions = {'key' : '${key}','format' : 'iframe','height' : ${h},'width' : ${w},'params' : {}};<\/script>` +
+    `<script type="text/javascript" src="https://www.highperformanceformat.com/${key}/invoke.js"><\/script>` +
+    `</body></html>`
+  );
+  doc.close();
 }
 function ttLoadAllAds() { document.querySelectorAll('[data-ad-key]').forEach(ttLoadAd); }
 

@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<style class="xad-off">.xadr,.ad-rail,.side-rail,.rail-ad,.wz-rail{display:none!important}</style>
 <link rel="icon" href="/favicon.ico" sizes="any"><link rel="icon" type="image/png" href="/favicon.png"><link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -95,7 +94,7 @@
 
 <div id="site-footer"></div>
 
-<script src="assets/site.js?v=3"></script>
+<script src="assets/site.js?v=4"></script>
 <script>
 const QUESTIONS = [
   { q: "Until 1939, Thailand was officially known by what name?",
@@ -315,6 +314,10 @@ const QUESTIONS = [
     f: "Daily offerings of flowers, incense and (yes) red Fanta keep the resident spirit content and out of the actual house — and it must never sit in the building's shadow." }
 ];
 
+/* One image per question, index 0-49 matches QUESTIONS order (file prefix 01-50).
+   Images are shown letterboxed (object-fit: contain) so nothing is ever cropped off. */
+const QUIZ_IMAGES = ["quizimages/01siam.jpeg","quizimages/02Kaosanroad.jpeg","quizimages/03budhistcal.jpeg","quizimages/04songkran.jpeg","quizimages/05hahaha.jpg","quizimages/06walkingstreet.jpg","quizimages/07kanchanaburi.jpg","quizimages/08tigerbeer.jpeg","quizimages/09kohphangan.jpg","quizimages/10tuktuk.jpg","quizimages/11ladyboy.jpeg","quizimages/12sangsom.jpg","quizimages/13jayfai.jpg","quizimages/14utapo.jpg","quizimages/15lottery.jpeg","quizimages/16pattaya.jpg","quizimages/17songthaew.jpeg","quizimages/18emerld.jpg","quizimages/19balihai.jpeg","quizimages/20DOLFIN.jpg","quizimages/21lkmetro.jpeg","quizimages/22sanctuary.jpg","quizimages/23pattayasign.jpg","quizimages/24nonnuch.jpeg","quizimages/25taween.jpg","quizimages/26yawarat.jpeg","quizimages/27chonburi.jpeg","quizimages/28thahitian.jpeg","quizimages/29xsagogo.jpeg","quizimages/30condom.jpg","quizimages/31nana.jpeg","quizimages/32soifour.jpg","quizimages/33boystown.jpg","quizimages/34moogata.jpg","quizimages/35durian.jpg","quizimages/36BangFai.jpeg","quizimages/37sriracha37.jpg","quizimages/38thaiking.jpeg","quizimages/39chaopraya.jpeg","quizimages/40thaimap.jpeg","quizimages/41magnolia.jpg","quizimages/42lizard.jpeg","quizimages/43watarun.jpg","quizimages/44soidog.jpg","quizimages/45JINJOK.jpg","quizimages/46waterlizard.jpeg","quizimages/47cobra.jpeg","quizimages/48redfanta.jpeg","quizimages/49elder.jpg","quizimages/50sanphra.jpeg"];
+
 /* ---------- Quiz engine ---------- */
 let idx = 0, score = 0, missed = [];
 
@@ -350,6 +353,10 @@ function showQuestion() {
     box.appendChild(b);
   });
 
+  /* Quietly pre-fetch this question's image so it's ready the instant they answer.
+     It is NOT displayed until the question is attempted. */
+  if (QUIZ_IMAGES[idx]) { const pre = new Image(); pre.src = QUIZ_IMAGES[idx]; }
+
   /* Refresh the advertising banner for each question */
   if (window.ThaiThukAds) window.ThaiThukAds.load(document.getElementById('quiz-ad'));
 }
@@ -375,6 +382,19 @@ function answer(btn, opt, q) {
     ? 'bg-emerald-600/10 border-emerald-600/40 text-emerald-800 dark:text-emerald-300'
     : 'bg-hot/10 border-hot/40 text-ink/80 dark:text-slate-200'}`;
   fb.innerHTML = `<strong>${correct ? 'Correct!' : `Not quite — it's “${q.a}”.`}</strong> ${q.f}`;
+
+  /* Reveal the question's image only after an attempt — shown below the answer text. */
+  const imgSrc = QUIZ_IMAGES[idx];
+  if (imgSrc) {
+    const img = document.createElement('img');
+    img.src = imgSrc;
+    img.alt = q.a;
+    img.decoding = 'async';
+    img.className = 'mt-3 w-full rounded-lg';
+    /* contain = whole image always visible, black bars fill the leftover space */
+    img.style.cssText = 'aspect-ratio:16/9;object-fit:contain;background:#000;';
+    fb.appendChild(img);
+  }
 
   $('q-score').textContent = `Score: ${score}`;
   const nb = $('next-btn');
