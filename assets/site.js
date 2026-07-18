@@ -301,39 +301,27 @@ function initForum() {
 }
 
 /* =========================================================
-   COOKIE CONSENT + ADVERTISING (Google AdSense)
-   - Ads only load after the visitor consents to advertising.
+   ADVERTISING (Google AdSense) + CONSENT
+   - Ad/personalisation consent for EEA/UK visitors is handled by Google's
+     certified CMP (AdSense → Privacy & messaging), delivered automatically
+     through adsbygoogle.js (loaded in each page <head>). Google holds the ad
+     auction until the visitor has made a choice, so we load units by default.
    - Ad containers are any element with data-ad-slot.
-   - The AdSense loader (adsbygoogle.js) is included in each page <head>.
-   - Call ThaiThukAds.load(el) to (re)load a single unit (used to refresh
-     the banner on every quiz question).
+   - A light first-visit notice covers strictly-necessary on-device storage
+     (theme + quiz progress); "Cookie Settings" reopens Google's consent choices.
+   - Call ThaiThukAds.load(el) to render/refresh a single unit (quiz banner).
    ========================================================= */
 const TT_ADSENSE_CLIENT = 'ca-pub-2738929737632064';
-const TT_CONSENT_KEY = 'thaithuk_consent_v1';
+const TT_NOTICE_KEY = 'thaithuk_notice_v2';
 
-function ttGetConsent() {
-  try { return JSON.parse(localStorage.getItem(TT_CONSENT_KEY)); } catch { return null; }
-}
-function ttSetConsent(ads) {
-  localStorage.setItem(TT_CONSENT_KEY, JSON.stringify({ ads: !!ads, ts: Date.now() }));
-}
-function ttAdsAllowed() { const c = ttGetConsent(); return !!(c && c.ads); }
-
-/* Load / refresh one Google AdSense unit into a container element. */
+/* Render one Google AdSense unit into a container element. */
 function ttLoadAd(el) {
   if (!el || !el.getAttribute) return;
   const slot = el.getAttribute('data-ad-slot');
   if (!slot) return;
-  const w = parseInt(el.getAttribute('data-ad-w'), 10) || 728;
-  const h = parseInt(el.getAttribute('data-ad-h'), 10) || 90;
   el.innerHTML = '';
-  if (!ttAdsAllowed()) {
-    el.innerHTML = `<div class="tt-ad-ph" style="width:${w}px;height:${h}px;max-width:100%;display:flex;align-items:center;justify-content:center;` +
-      `border:1px dashed rgba(201,162,39,.4);border-radius:8px;font-size:11px;letter-spacing:.15em;text-transform:uppercase;opacity:.5">Advertisement</div>`;
-    return;
-  }
   /* Inject a responsive AdSense <ins> unit and ask AdSense to fill it.
-     adsbygoogle.js is already loaded from the page <head>. */
+     adsbygoogle.js (with the CMP) is already loaded from the page <head>. */
   const ins = document.createElement('ins');
   ins.className = 'adsbygoogle';
   ins.style.cssText = 'display:block;margin:0 auto;text-align:center';
@@ -346,60 +334,46 @@ function ttLoadAd(el) {
 }
 function ttLoadAllAds() { document.querySelectorAll('[data-ad-slot]').forEach(ttLoadAd); }
 
-window.ThaiThukAds = { load: ttLoadAd, refreshAll: ttLoadAllAds, allowed: ttAdsAllowed };
+window.ThaiThukAds = { load: ttLoadAd, refreshAll: ttLoadAllAds };
 
-/* Consent banner (first visit) + settings modal (reopened from footer). */
+/* Reopen the visitor's ad-consent choices. In the EEA/UK, Google's CMP
+   (Funding Choices) exposes googlefc.showRevocationMessage(); elsewhere there
+   is no ad-consent prompt, so we fall back to the Cookie Policy. */
+function ttOpenConsentChoices() {
+  try {
+    if (window.googlefc && typeof window.googlefc.showRevocationMessage === 'function') {
+      window.googlefc.showRevocationMessage();
+      return;
+    }
+  } catch (e) {}
+  window.location.href = 'cookie-policy.html';
+}
+
+/* Light first-visit notice for strictly-necessary on-device storage.
+   (Ad/personalisation consent is handled separately by Google's CMP.) */
 function ttInitConsent() {
-  const modal = document.createElement('div');
-  modal.id = 'tt-cc-modal';
-  modal.className = 'hidden fixed inset-0 z-[100] flex items-center justify-center p-4';
-  modal.innerHTML = `
-    <div class="absolute inset-0 bg-black/50" data-cc-close></div>
-    <div class="relative bg-surface dark:bg-slate-800 rounded-xl shadow-xl border border-gold/20 dark:border-slate-700 max-w-md w-full p-6 text-sm">
-      <h2 class="font-serif text-xl font-bold text-ink dark:text-white">Cookie settings</h2>
-      <p class="mt-2 text-ink/70 dark:text-slate-300">Necessary storage keeps the site working on your device. Advertising is optional.</p>
-      <label class="flex items-start gap-3 mt-4 text-ink/80 dark:text-slate-200">
-        <input type="checkbox" checked disabled class="mt-1">
-        <span><strong class="text-ink dark:text-white">Strictly necessary</strong> — remembers your theme, quiz progress and cookie choice on this device only. Always on.</span>
-      </label>
-      <label class="flex items-start gap-3 mt-3 text-ink/80 dark:text-slate-200">
-        <input type="checkbox" id="tt-cc-ads" class="mt-1">
-        <span><strong class="text-ink dark:text-white">Advertising</strong> — lets us show ads via Google AdSense, which may set cookies. Turn off to keep the site ad-free for you.</span>
-      </label>
-      <div class="mt-6 flex flex-wrap gap-2 justify-end">
-        <button type="button" data-cc-save class="px-4 py-2 rounded-full bg-hot text-white font-semibold">Save choices</button>
-        <button type="button" data-cc-acceptall class="px-4 py-2 rounded-full border border-gold/40 dark:border-slate-600 text-ink dark:text-slate-100">Accept all</button>
+  document.addEventListener('click', e => {
+    if (e.target.closest('[data-cookie-settings]')) { e.preventDefault(); ttOpenConsentChoices(); }
+    else if (e.target.closest('[data-cc-dismiss]')) {
+      try { localStorage.setItem(TT_NOTICE_KEY, '1'); } catch (e) {}
+      const b = document.getElementById('tt-cc-banner'); if (b) b.remove();
+    }
+  });
+
+  let seen = false;
+  try { seen = localStorage.getItem(TT_NOTICE_KEY) === '1'; } catch (e) {}
+  if (seen) return;
+
+  const banner = document.createElement('div');
+  banner.id = 'tt-cc-banner';
+  banner.className = 'fixed bottom-0 inset-x-0 z-[90] bg-night text-slate-200 border-t border-gold/30';
+  banner.innerHTML = `
+    <div class="max-w-5xl mx-auto px-4 py-4 flex flex-col sm:flex-row items-center gap-3 text-sm">
+      <p class="flex-1">ThaiThuk uses a little on-device storage to remember your theme and quiz progress, and shows ads via Google. EEA/UK visitors are asked about ad personalisation separately. See our <a href="cookie-policy.html" class="text-gold underline">Cookie Policy</a>.</p>
+      <div class="flex gap-2 shrink-0">
+        <button type="button" data-cookie-settings class="px-4 py-2 rounded-full border border-gold/40 hover:bg-slate-800">Ad settings</button>
+        <button type="button" data-cc-dismiss class="px-4 py-2 rounded-full bg-gold text-night font-semibold hover:bg-golddeep">Got it</button>
       </div>
     </div>`;
-  document.body.appendChild(modal);
-
-  let banner = null;
-  if (!ttGetConsent()) {
-    banner = document.createElement('div');
-    banner.id = 'tt-cc-banner';
-    banner.className = 'fixed bottom-0 inset-x-0 z-[90] bg-night text-slate-200 border-t border-gold/30';
-    banner.innerHTML = `
-      <div class="max-w-5xl mx-auto px-4 py-4 flex flex-col sm:flex-row items-center gap-3 text-sm">
-        <p class="flex-1">We use a little local storage to run ThaiThuk, plus optional cookies to show ads via Google AdSense. See our <a href="cookie-policy.html" class="text-gold underline">Cookie Policy</a>.</p>
-        <div class="flex gap-2 shrink-0">
-          <button type="button" data-cc-reject class="px-4 py-2 rounded-full border border-slate-500 hover:bg-slate-800">Reject</button>
-          <button type="button" data-cc-customise class="px-4 py-2 rounded-full border border-gold/40 hover:bg-slate-800">Customise</button>
-          <button type="button" data-cc-acceptall class="px-4 py-2 rounded-full bg-gold text-night font-semibold hover:bg-golddeep">Accept all</button>
-        </div>
-      </div>`;
-    document.body.appendChild(banner);
-  }
-
-  const openModal = () => { const b = document.getElementById('tt-cc-ads'); if (b) b.checked = ttAdsAllowed(); modal.classList.remove('hidden'); };
-  const closeModal = () => modal.classList.add('hidden');
-  const apply = (ads) => { ttSetConsent(ads); if (banner) { banner.remove(); banner = null; } closeModal(); ttLoadAllAds(); };
-
-  document.addEventListener('click', e => {
-    if (e.target.closest('[data-cc-acceptall]')) apply(true);
-    else if (e.target.closest('[data-cc-reject]')) apply(false);
-    else if (e.target.closest('[data-cc-customise]')) openModal();
-    else if (e.target.closest('[data-cc-save]')) apply(!!document.getElementById('tt-cc-ads').checked);
-    else if (e.target.closest('[data-cc-close]')) closeModal();
-    else if (e.target.closest('[data-cookie-settings]')) { e.preventDefault(); openModal(); }
-  });
+  document.body.appendChild(banner);
 }
