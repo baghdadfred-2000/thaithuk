@@ -3,6 +3,8 @@
 <head>
 <link rel="icon" href="/favicon.ico" sizes="any"><link rel="icon" type="image/png" href="/favicon.png"><link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <meta charset="UTF-8">
+<meta name="google-adsense-account" content="ca-pub-2738929737632064">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2738929737632064" crossorigin="anonymous"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>The ThaiThuk Quiz — 50 Questions on Thailand | ThaiThuk</title>
 <meta name="description" content="50 questions on Thailand, Bangkok and Pattaya — culture, history, food, drink, nightlife, superstitions and street smarts. Think you know the Land of Smiles? Prove it.">
@@ -70,7 +72,7 @@
       <button id="next-btn" class="hidden mt-5 px-6 py-2.5 rounded-full bg-hot text-white font-semibold hover:bg-hot/90 transition-colors">Next Question →</button>
     </div>
     <!-- Refreshes on every question via showQuestion() -->
-    <div id="quiz-ad" class="mt-6 flex justify-center" data-ad-key="0e4413079c83946d9cd8e7cb5dc1781e" data-ad-w="728" data-ad-h="90"></div>
+    <div id="quiz-ad" class="mt-6 flex justify-center" data-ad-slot="1234567890"></div>
   </section>
 
   <!-- RESULTS SCREEN -->
@@ -357,8 +359,10 @@ function showQuestion() {
      It is NOT displayed until the question is attempted. */
   if (QUIZ_IMAGES[idx]) { const pre = new Image(); pre.src = QUIZ_IMAGES[idx]; }
 
-  /* Refresh the advertising banner for each question */
-  if (window.ThaiThukAds) window.ThaiThukAds.load(document.getElementById('quiz-ad'));
+  /* Load the AdSense banner once (on the first question). AdSense policy
+     discourages refreshing/re-requesting ads without a genuine pageview, so
+     we do NOT reload it on every question. */
+  if (idx === 0 && window.ThaiThukAds) window.ThaiThukAds.load(document.getElementById('quiz-ad'));
 }
 
 function answer(btn, opt, q) {

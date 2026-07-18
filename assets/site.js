@@ -301,12 +301,14 @@ function initForum() {
 }
 
 /* =========================================================
-   COOKIE CONSENT + ADVERTISING (Adsterra)
+   COOKIE CONSENT + ADVERTISING (Google AdSense)
    - Ads only load after the visitor consents to advertising.
-   - Ad containers are any element with data-ad-key / data-ad-w / data-ad-h.
+   - Ad containers are any element with data-ad-slot.
+   - The AdSense loader (adsbygoogle.js) is included in each page <head>.
    - Call ThaiThukAds.load(el) to (re)load a single unit (used to refresh
      the banner on every quiz question).
    ========================================================= */
+const TT_ADSENSE_CLIENT = 'ca-pub-2738929737632064';
 const TT_CONSENT_KEY = 'thaithuk_consent_v1';
 
 function ttGetConsent() {
@@ -317,11 +319,11 @@ function ttSetConsent(ads) {
 }
 function ttAdsAllowed() { const c = ttGetConsent(); return !!(c && c.ads); }
 
-/* Load / refresh one Adsterra unit into a container element. */
+/* Load / refresh one Google AdSense unit into a container element. */
 function ttLoadAd(el) {
   if (!el || !el.getAttribute) return;
-  const key = el.getAttribute('data-ad-key');
-  if (!key) return;
+  const slot = el.getAttribute('data-ad-slot');
+  if (!slot) return;
   const w = parseInt(el.getAttribute('data-ad-w'), 10) || 728;
   const h = parseInt(el.getAttribute('data-ad-h'), 10) || 90;
   el.innerHTML = '';
@@ -330,27 +332,19 @@ function ttLoadAd(el) {
       `border:1px dashed rgba(201,162,39,.4);border-radius:8px;font-size:11px;letter-spacing:.15em;text-transform:uppercase;opacity:.5">Advertisement</div>`;
     return;
   }
-  /* Adsterra's invoke.js relies on document.write, which browsers ignore
-     for dynamically injected scripts. Render the unit inside a same-origin
-     iframe where document.write still works. */
-  const frame = document.createElement('iframe');
-  frame.width = w;
-  frame.height = h;
-  frame.setAttribute('scrolling', 'no');
-  frame.style.cssText = `border:0;display:block;max-width:100%;margin:0 auto;overflow:hidden`;
-  el.appendChild(frame);
-  const doc = frame.contentWindow.document;
-  doc.open();
-  doc.write(
-    `<!doctype html><html><head><meta charset="utf-8">` +
-    `<style>html,body{margin:0;padding:0;overflow:hidden}</style></head><body>` +
-    `<script type="text/javascript">atOptions = {'key' : '${key}','format' : 'iframe','height' : ${h},'width' : ${w},'params' : {}};<\/script>` +
-    `<script type="text/javascript" src="https://www.highperformanceformat.com/${key}/invoke.js"><\/script>` +
-    `</body></html>`
-  );
-  doc.close();
+  /* Inject a responsive AdSense <ins> unit and ask AdSense to fill it.
+     adsbygoogle.js is already loaded from the page <head>. */
+  const ins = document.createElement('ins');
+  ins.className = 'adsbygoogle';
+  ins.style.cssText = 'display:block;margin:0 auto;text-align:center';
+  ins.setAttribute('data-ad-client', TT_ADSENSE_CLIENT);
+  ins.setAttribute('data-ad-slot', slot);
+  ins.setAttribute('data-ad-format', 'auto');
+  ins.setAttribute('data-full-width-responsive', 'true');
+  el.appendChild(ins);
+  try { (window.adsbygoogle = window.adsbygoogle || []).push({}); } catch (e) {}
 }
-function ttLoadAllAds() { document.querySelectorAll('[data-ad-key]').forEach(ttLoadAd); }
+function ttLoadAllAds() { document.querySelectorAll('[data-ad-slot]').forEach(ttLoadAd); }
 
 window.ThaiThukAds = { load: ttLoadAd, refreshAll: ttLoadAllAds, allowed: ttAdsAllowed };
 
@@ -370,7 +364,7 @@ function ttInitConsent() {
       </label>
       <label class="flex items-start gap-3 mt-3 text-ink/80 dark:text-slate-200">
         <input type="checkbox" id="tt-cc-ads" class="mt-1">
-        <span><strong class="text-ink dark:text-white">Advertising</strong> — lets us show ads via Adsterra, which may set cookies. Turn off to keep the site ad-free for you.</span>
+        <span><strong class="text-ink dark:text-white">Advertising</strong> — lets us show ads via Google AdSense, which may set cookies. Turn off to keep the site ad-free for you.</span>
       </label>
       <div class="mt-6 flex flex-wrap gap-2 justify-end">
         <button type="button" data-cc-save class="px-4 py-2 rounded-full bg-hot text-white font-semibold">Save choices</button>
@@ -386,7 +380,7 @@ function ttInitConsent() {
     banner.className = 'fixed bottom-0 inset-x-0 z-[90] bg-night text-slate-200 border-t border-gold/30';
     banner.innerHTML = `
       <div class="max-w-5xl mx-auto px-4 py-4 flex flex-col sm:flex-row items-center gap-3 text-sm">
-        <p class="flex-1">We use a little local storage to run ThaiThuk, plus optional cookies to show ads via Adsterra. See our <a href="cookie-policy.html" class="text-gold underline">Cookie Policy</a>.</p>
+        <p class="flex-1">We use a little local storage to run ThaiThuk, plus optional cookies to show ads via Google AdSense. See our <a href="cookie-policy.html" class="text-gold underline">Cookie Policy</a>.</p>
         <div class="flex gap-2 shrink-0">
           <button type="button" data-cc-reject class="px-4 py-2 rounded-full border border-slate-500 hover:bg-slate-800">Reject</button>
           <button type="button" data-cc-customise class="px-4 py-2 rounded-full border border-gold/40 hover:bg-slate-800">Customise</button>

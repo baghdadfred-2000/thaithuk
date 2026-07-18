@@ -27,17 +27,20 @@ gold `#C9A227`/`#B8860B`, teal `#0D9488`, emerald `#059669`, surface `#FFFBF0`.
 
 ## Advertising & cookie consent
 
-Ads are served by **Adsterra** and wired through `site.js`. To place an ad, drop a
-container anywhere with the data attributes for the unit you want:
+Ads are served by **Google AdSense** (publisher `ca-pub-2738929737632064`) and wired
+through `site.js`. The AdSense loader (`adsbygoogle.js`) and the
+`<meta name="google-adsense-account">` verification tag are in every page `<head>`.
+To place an ad, drop a container anywhere with the slot you want:
 
 ```html
-<div class="flex justify-center" data-ad-key="0e4413079c83946d9cd8e7cb5dc1781e" data-ad-w="728" data-ad-h="90"></div>
+<div class="flex justify-center" data-ad-slot="1234567890"></div>
 ```
 
-- `site.js` finds every `[data-ad-key]` element and loads the Adsterra unit into it.
-- The current leaderboard key is `0e4413079c83946d9cd8e7cb5dc1781e` (728×90); a
-  320×50 unit (`b2b93ad1cbc896a5a1d5fb03f3876532`) is available if a smaller slot
-  is ever needed.
+- `site.js` finds every `[data-ad-slot]` element and injects a responsive AdSense
+  `<ins class="adsbygoogle">` unit into it after consent.
+- Replace the placeholder `1234567890` with a real **ad unit slot ID** created in
+  your AdSense dashboard (Ads → By ad unit). Until you do, the units render but
+  won't fill.
 - Ads **only load after the visitor consents.** A first-visit consent banner
   (Reject / Customise / Accept all) plus a settings modal are built into `site.js`;
   the **Cookie Settings** link in the footer reopens it. Until consent, each slot
@@ -80,9 +83,9 @@ form in `contact.html` and delete `initContactForm()` in `site.js`.
 **Vercel / Cloudflare Pages / GitHub Pages:** all work as-is — it's plain static files.
 
 **Before going live:** point the `thaithuk.com` DNS at your host, add a favicon,
-and create `sitemap.xml` + `robots.txt`. The Adsterra ad slots and the cookie-consent
-banner are already in place — just confirm your Adsterra account is approved for the
-domain.
+and create `sitemap.xml` + `robots.txt`. The AdSense ad slots and the cookie-consent
+banner are already in place — just confirm your Google AdSense account is approved for
+the domain and paste real ad-unit slot IDs into each `data-ad-slot`.
 
 **Later, if the site grows:** move to Eleventy or Astro so header/footer become
 real build-time includes, and Tailwind CDN becomes a compiled stylesheet. The
