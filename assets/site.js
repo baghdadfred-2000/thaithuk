@@ -69,12 +69,42 @@ function headerHTML() {
 function footerHTML() {
   return `
   <footer class="mt-20 bg-night text-slate-300">
-    <div class="max-w-7xl mx-auto px-4 py-14 grid gap-10 md:grid-cols-3">
+    <div class="max-w-7xl mx-auto px-4 py-10 grid gap-8 md:grid-cols-3">
       <div>
-        <div class="flex items-center gap-2 mb-3">${LOGO_SVG}
+        <div class="flex items-center gap-2 mb-4">${LOGO_SVG}
           <span class="font-serif text-xl font-bold text-white">Thai<span class="text-gold">Thuk</span></span>
+          <svg viewBox="0 0 9 6" width="24" height="16" class="rounded-[2px] ring-1 ring-white/20 shrink-0" role="img" aria-label="Thai flag"><rect width="9" height="6" fill="#F4F5F8"/><rect width="9" height="1" y="0" fill="#A51931"/><rect width="9" height="1" y="5" fill="#A51931"/><rect width="9" height="2" y="2" fill="#2D2A4A"/></svg>
         </div>
-        <p class="text-sm leading-relaxed">Independent English-language news and stories from Pattaya and around Thailand — street level, sourced, and written by people who actually live here.</p>
+
+        <!-- Newsletter (MailerLite) -->
+        <div id="mlb2-44063259" class="ml-form-embedContainer ml-subscribe-form ml-subscribe-form-44063259 max-w-xs">
+          <div class="ml-form-embedWrapper">
+            <div class="ml-form-embedBody row-form">
+              <h3 class="text-white font-semibold mb-1 text-sm uppercase tracking-wider">Subscribe</h3>
+              <p class="text-xs text-slate-400 mb-3">Breaking Thailand news and exclusive offers from our network.</p>
+              <form class="ml-block-form" action="https://assets.mailerlite.com/jsonp/2528952/forms/193796763912504673/subscribe" data-code="" method="post" target="_blank">
+                <div class="ml-form-fieldRow">
+                  <input aria-label="email" aria-required="true" type="email" name="fields[email]" placeholder="Enter your email" autocomplete="email" required
+                    class="w-full px-4 py-2.5 rounded-md bg-slate-100 text-ink placeholder-slate-500 text-sm border border-transparent focus:outline-none focus:ring-2 focus:ring-gold">
+                </div>
+                <input type="hidden" name="ml-submit" value="1">
+                <div class="ml-form-embedSubmit mt-3">
+                  <button type="submit" class="primary inline-flex items-center justify-center px-6 py-2.5 rounded-md bg-night text-white text-sm font-semibold border border-slate-500 hover:border-gold hover:text-gold transition-colors">Subscribe</button>
+                  <button disabled="disabled" style="display:none" type="button" class="loading inline-flex items-center justify-center px-6 py-2.5 rounded-md bg-night text-white text-sm font-semibold border border-slate-500">
+                    <div class="ml-form-embedSubmitLoad"></div><span class="sr-only">Loading...</span>
+                  </button>
+                </div>
+                <input type="hidden" name="anticsrf" value="true">
+              </form>
+            </div>
+            <div class="ml-form-successBody row-success" style="display:none">
+              <div class="ml-form-successContent">
+                <h3 class="text-white font-semibold mb-1 text-sm uppercase tracking-wider">Subscribe</h3>
+                <p class="text-sm text-gold font-medium">Thank you — you're on the list! 🎉</p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       <div>
         <h3 class="text-white font-semibold mb-3 text-sm uppercase tracking-wider">Explore</h3>
@@ -147,6 +177,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  /* MailerLite subscribe form (footer) */
+  initMailerLite();
+
   /* Cookie consent + advertising */
   ttInitConsent();
   ttLoadAllAds();
@@ -206,6 +239,38 @@ function initContactForm() {
     form.classList.add('hidden');
     document.getElementById('contact-success').classList.remove('hidden');
   });
+}
+
+/* ---------- MailerLite subscribe (footer) ----------
+   Loads MailerLite's webform script, which intercepts the form submit,
+   posts via AJAX (no new tab / page reload) and calls the success
+   callback below to swap the form for the "Thank you" message. */
+window.ml_webform_success_44063259 = function () {
+  var $ = window.ml_jQuery || window.jQuery;
+  if ($) {
+    $('.ml-subscribe-form-44063259 .row-success').show();
+    $('.ml-subscribe-form-44063259 .row-form').hide();
+  } else {
+    document.querySelectorAll('.ml-subscribe-form-44063259 .row-success')
+      .forEach(function (el) { el.style.display = ''; });
+    document.querySelectorAll('.ml-subscribe-form-44063259 .row-form')
+      .forEach(function (el) { el.style.display = 'none'; });
+  }
+};
+
+function initMailerLite() {
+  if (!document.querySelector('.ml-subscribe-form-44063259')) return;
+  if (!document.getElementById('ml-webforms-js')) {
+    var s = document.createElement('script');
+    s.id = 'ml-webforms-js';
+    s.src = 'https://groot.mailerlite.com/js/w/webforms.min.js?v83147fa8ce2d95cb73ece7f28b469519';
+    s.async = true;
+    document.body.appendChild(s);
+  }
+  /* Register this embed's load with MailerLite (as in their snippet). */
+  try {
+    fetch('https://assets.mailerlite.com/jsonp/2528952/forms/193796763912504673/takel');
+  } catch (e) {}
 }
 
 /* ---------- Forum (localStorage mock) ---------- */

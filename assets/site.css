@@ -62,6 +62,25 @@
 .wire-row { border-left: 3px solid #FF2E63; transition: background .15s; }
 .wire-row:hover { background: rgba(255,46,99,.06); }
 
+/* Newsletter (MailerLite) footer form: loading spinner + a11y helper */
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0,0,0,0); border: 0;
+}
+.ml-form-embedSubmitLoad {
+  display: inline-block; width: 20px; height: 20px;
+}
+.ml-form-embedSubmitLoad:after {
+  content: " "; display: block; width: 11px; height: 11px; margin: 1px;
+  border-radius: 50%; border: 3px solid #fff;
+  border-color: #fff #fff #fff transparent;
+  animation: ml-form-embedSubmitLoad 1.2s linear infinite;
+}
+@keyframes ml-form-embedSubmitLoad {
+  0%   { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
 /* AdSense-ready slot — swap the inner div for your ad unit code */
 .ad-slot {
   display: flex; align-items: center; justify-content: center;
