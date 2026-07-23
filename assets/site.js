@@ -127,7 +127,7 @@ function footerHTML() {
     </div>
     <div class="border-t border-slate-700">
       <div class="max-w-7xl mx-auto px-4 py-5 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-400">
-        <p>© 2026 Genext Information Systems. All rights reserved. · thaithuk.com · V1.0</p>
+        <p>© 2026 Genext Information Systems. All rights reserved. </p>
         <nav class="flex flex-wrap gap-4" aria-label="Legal">
           <a class="hover:text-gold" href="privacy-policy.html">Privacy</a>
           <a class="hover:text-gold" href="terms-of-service.html">Terms</a>
