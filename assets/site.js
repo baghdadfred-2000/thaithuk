@@ -87,6 +87,7 @@ function footerHTML() {
                   <input aria-label="email" aria-required="true" type="email" name="fields[email]" placeholder="Enter your email" autocomplete="email" required
                     class="w-full px-4 py-2.5 rounded-md bg-slate-100 text-ink placeholder-slate-500 text-sm border border-transparent focus:outline-none focus:ring-2 focus:ring-gold">
                 </div>
+                <input type="hidden" name="fields[company]" value="ThaiThuk">
                 <input type="hidden" name="ml-submit" value="1">
                 <div class="ml-form-embedSubmit mt-3">
                   <button type="submit" class="primary inline-flex items-center justify-center px-6 py-2.5 rounded-md bg-night text-white text-sm font-semibold border border-slate-500 hover:border-gold hover:text-gold transition-colors">Subscribe</button>
