@@ -67,15 +67,11 @@ function headerHTML() {
 
 /* ---------- SHARED FOOTER (identical on every page) ---------- */
 function footerHTML() {
-  return `
-  <footer class="mt-20 bg-night text-slate-300">
-    <div class="max-w-7xl mx-auto px-4 py-10 grid gap-8 md:grid-cols-3">
-      <div>
-        <div class="flex items-center gap-2 mb-4">${LOGO_SVG}
-          <span class="font-serif text-xl font-bold text-white">Thai<span class="text-gold">Thuk</span></span>
-          <svg viewBox="0 0 9 6" width="24" height="16" class="rounded-[2px] ring-1 ring-white/20 shrink-0" role="img" aria-label="Thai flag"><rect width="9" height="6" fill="#F4F5F8"/><rect width="9" height="1" y="0" fill="#A51931"/><rect width="9" height="1" y="5" fill="#A51931"/><rect width="9" height="2" y="2" fill="#2D2A4A"/></svg>
-        </div>
-
+  /* Hide the newsletter signup on the quiz page (or any page with
+     <body data-no-signup>). */
+  const showSignup = !/quiz\.html$/.test(location.pathname) &&
+    !(document.body && document.body.hasAttribute('data-no-signup'));
+  const newsletter = !showSignup ? '' : `
         <!-- Newsletter (MailerLite) -->
         <div id="mlb2-44063259" class="ml-form-embedContainer ml-subscribe-form ml-subscribe-form-44063259 max-w-xs">
           <div class="ml-form-embedWrapper">
@@ -105,7 +101,17 @@ function footerHTML() {
               </div>
             </div>
           </div>
+        </div>`;
+
+  return `
+  <footer class="mt-20 bg-night text-slate-300">
+    <div class="max-w-7xl mx-auto px-4 py-10 grid gap-8 md:grid-cols-3">
+      <div>
+        <div class="flex items-center gap-2 mb-4">${LOGO_SVG}
+          <span class="font-serif text-xl font-bold text-white">Thai<span class="text-gold">Thuk</span></span>
+          <svg viewBox="0 0 9 6" width="24" height="16" class="rounded-[2px] ring-1 ring-white/20 shrink-0" role="img" aria-label="Thai flag"><rect width="9" height="6" fill="#F4F5F8"/><rect width="9" height="1" y="0" fill="#A51931"/><rect width="9" height="1" y="5" fill="#A51931"/><rect width="9" height="2" y="2" fill="#2D2A4A"/></svg>
         </div>
+        ${newsletter}
       </div>
       <div>
         <h3 class="text-white font-semibold mb-3 text-sm uppercase tracking-wider">Explore</h3>
