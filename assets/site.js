@@ -122,7 +122,7 @@ function footerHTML() {
         </ul>
       </div>
       <div>
-        <h3 class="text-white font-semibold mb-3 text-sm uppercase tracking-wider">Tools &amp; Guides</h3>
+        <h3 class="text-white font-semibold mb-3 text-sm uppercase tracking-wider">Network Sites</h3>
         <ul class="space-y-2 text-sm">
           <li><a class="hover:text-gold" href="https://thaivisafinder.com" target="_blank" rel="noopener">ThaiVisaFinder</a></li>
           <li><a class="hover:text-gold" href="https://thaiholidaybudget.com" target="_blank" rel="noopener">ThaiHolidayBudget</a></li>
